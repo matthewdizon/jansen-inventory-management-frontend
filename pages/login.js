@@ -55,8 +55,6 @@ function Login() {
   return (
     <div className="bg-gray-400 h-screen text-center flex flex-col justify-center items-center">
       <h1 className="text-4xl font-bold">Login</h1>
-      <p>{email}</p>
-      <p>{password}</p>
       <form onSubmit={handleSubmit} className="grid gap-2 my-8">
         <input
           type="email"
