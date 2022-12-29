@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Router from "next/router";
+import Layout from "../components/layout";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -53,8 +54,8 @@ function Login() {
   };
 
   return (
-    <div className="bg-gray-400 h-screen text-center flex flex-col justify-center items-center">
-      <h1 className="text-4xl font-bold">Login</h1>
+    <Layout>
+      <h1 className="text-4xl font-bold text-[#094067] uppercase">Login</h1>
       <form onSubmit={handleSubmit} className="grid gap-2 my-8">
         <input
           type="email"
@@ -68,14 +69,14 @@ function Login() {
           placeholder="password"
           className="px-4 py-2 rounded-xl"
         />
-        <button className="bg-gray-200 rounded-xl font-bold uppercase p-2">
+        <button className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase">
           Login
         </button>
       </form>
       {showMessage && (
         <div className="bg-red-500 text-white p-4 rounded-xl">{message}</div>
       )}
-    </div>
+    </Layout>
   );
 }
 
