@@ -1,10 +1,13 @@
+import SideNav from "./sidenav";
+
 function Layout({ children }) {
   return (
-    <>
-      <div className="bg-[#fffffe] h-screen text-[#5f6c7b] flex flex-col gap-4 justify-center items-center">
+    <div className="flex relative">
+      <SideNav />
+      <div className="bg-[#d8eefe] h-screen text-[#5f6c7b] w-[80vw] p-8">
         {children}
       </div>
-    </>
+    </div>
   );
 }
 

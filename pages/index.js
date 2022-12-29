@@ -5,7 +5,6 @@ import Layout from "../components/layout";
 
 export default function Home() {
   const [data, setData] = useState(null);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,42 +27,39 @@ export default function Home() {
       }
     }
 
-    async function getUser() {
-      const jwt = localStorage.getItem("accessToken");
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/users/user`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      try {
-        const data = await res.json();
-        if (!data.error) {
-          setUser(data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
     fetchData();
-    getUser();
   }, []);
-
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    Router.push("/login");
-  };
 
   return (
     <Layout>
-      <h1 className="text-4xl font-bold text-[#094067]">
-        Inventory Management System
-      </h1>
-      <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
+      <div className="flex items-center justify-between pb-4">
+        <h1 className="font-bold text-[#094067]">Home Dashboard</h1>
+        <button className="flex items-center bg-[#90b4ce] text-[#fffffe] rounded-lg p-2 px-4 gap-2 hover:opacity-50 duration-500 transition">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
+              fill="currentColor"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
+              fill="currentColor"
+            />
+          </svg>
+
+          <p>New</p>
+        </button>
+      </div>
+      <div className="overflow-hidden overflow-x-auto rounded-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
             <tr>
@@ -73,7 +69,7 @@ export default function Home() {
                 </label>
 
                 <input
-                  className="h-5 w-5 rounded border-gray-200"
+                  className="h-5 w-5 rounded border-gray-200 hover:cursor-pointer"
                   type="checkbox"
                   id="SelectAll"
                 />
@@ -117,16 +113,15 @@ export default function Home() {
 
           <tbody className="divide-y divide-gray-200">
             {data?.map((part, index) => {
-              console.log(part);
               return (
                 <tr key={index}>
-                  <td className="bg-white px-4 py-2">
+                  <td className="px-4 py-2">
                     <label className="sr-only" for="Row1">
                       Row 1
                     </label>
 
                     <input
-                      className="h-5 w-5 rounded border-gray-200"
+                      className="h-5 w-5 rounded border-gray-200 hover:cursor-pointer"
                       type="checkbox"
                       id="Row1"
                     />
@@ -148,7 +143,7 @@ export default function Home() {
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     {part.price}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-400">
                     <svg
                       width="24"
                       height="24"
@@ -177,18 +172,6 @@ export default function Home() {
           </tbody>
         </table>
       </div>
-
-      {user && <div>Welcome, {user.email}!</div>}
-      {data ? (
-        <button
-          onClick={() => logout()}
-          className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase"
-        >
-          Logout
-        </button>
-      ) : (
-        <Link href={"/login"}>Login</Link>
-      )}
     </Layout>
   );
 }
