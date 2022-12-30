@@ -35,11 +35,14 @@ function SideNav() {
   };
 
   return (
-    <div className="w-[20vw] p-8 grid items-stretch text-[#5f6c7b]">
+    <div className="w-[20vw] p-8 flex flex-col justify-between text-[#5f6c7b]">
       <h1 className="font-bold uppercase text-3xl text-[#094067]">Autobest</h1>
       <div>
-        <ul className="grid gap-4 pt-4 font-semibold">
-          <li className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]">
+        <ul className="grid gap-4 font-semibold">
+          <Link
+            href={"/"}
+            className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]"
+          >
             <svg
               width="24"
               height="24"
@@ -55,8 +58,11 @@ function SideNav() {
               />
             </svg>
             <p>Home</p>
-          </li>
-          <li className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]">
+          </Link>
+          <Link
+            href={"/parts"}
+            className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]"
+          >
             <svg
               width="24"
               height="24"
@@ -65,19 +71,46 @@ function SideNav() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M10 12C9.44769 12 9 12.4477 9 13C9 13.5523 9.44769 14 10 14H14C14.5522 14 15 13.5523 15 13C15 12.4477 14.5522 12 14 12H10Z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M17 5.5H20C21.1046 5.5 22 6.39543 22 7.5V19.5C22 20.6046 21.1046 21.5 20 21.5H4C2.89543 21.5 2 20.6046 2 19.5V7.5C2 6.39543 2.89543 5.5 4 5.5H7C7 3.84315 8.34315 2.5 10 2.5H14C15.6569 2.5 17 3.84315 17 5.5ZM14 4.5H10C9.44772 4.5 9 4.94772 9 5.5H15C15 4.94772 14.5523 4.5 14 4.5ZM20 7.5H4V9.5H20V7.5ZM4 19.5V11.5H7V13.5H11V11.5H13V13.5H17V11.5H20V19.5H4Z"
                 fill="currentColor"
               />
+            </svg>
+            <p>Parts</p>
+          </Link>
+          <Link
+            href={"/suppliers"}
+            className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
-                d="M4 2C2.34314 2 1 3.34314 1 5V19C1 20.6569 2.34314 22 4 22H20C21.6569 22 23 20.6569 23 19V5C23 3.34314 21.6569 2 20 2H4ZM20 4H4C3.44769 4 3 4.44769 3 5V8H21V5C21 4.44769 20.5522 4 20 4ZM3 19V10H21V19C21 19.5523 20.5522 20 20 20H4C3.44769 20 3 19.5523 3 19Z"
+                d="M5.79166 2H1V4H4.2184L6.9872 16.6776H7V17H20V16.7519L22.1932 7.09095L22.5308 6H6.6552L6.08485 3.38852L5.79166 2ZM19.9869 8H7.092L8.62081 15H18.3978L19.9869 8Z"
+                fill="currentColor"
+              />
+              <path
+                d="M10 22C11.1046 22 12 21.1046 12 20C12 18.8954 11.1046 18 10 18C8.89543 18 8 18.8954 8 20C8 21.1046 8.89543 22 10 22Z"
+                fill="currentColor"
+              />
+              <path
+                d="M19 20C19 21.1046 18.1046 22 17 22C15.8954 22 15 21.1046 15 20C15 18.8954 15.8954 18 17 18C18.1046 18 19 18.8954 19 20Z"
                 fill="currentColor"
               />
             </svg>
             <p>Suppliers</p>
-          </li>
-          <li className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]">
+          </Link>
+          <Link
+            href={"/transactions"}
+            className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]"
+          >
             <svg
               width="24"
               height="24"
@@ -96,8 +129,11 @@ function SideNav() {
               />
             </svg>
             <p>Transactions</p>
-          </li>
-          <li className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]">
+          </Link>
+          <Link
+            href={"/users"}
+            className="flex gap-2 hover:cursor-pointer max-w-max hover:text-[#094067]"
+          >
             <svg
               width="24"
               height="24"
@@ -120,20 +156,60 @@ function SideNav() {
               <path d="M22 7H16V9H22V7Z" fill="currentColor" />
             </svg>
             <p>Users</p>
-          </li>
+          </Link>
         </ul>
       </div>
       <div>
-        {user && <div>Welcome, {user.email}!</div>}
+        <hr className="py-4" />
         {user ? (
-          <button
-            onClick={() => logout()}
-            className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase"
-          >
-            Logout
-          </button>
+          // <button
+          //   onClick={() => logout()}
+          //   className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase"
+          // >
+          //   Logout
+          // </button>
+          <div className="flex gap-2 items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="hover:cursor-pointer"
+              onClick={() => logout()}
+            >
+              <path
+                d="M8.51428 20H4.51428C3.40971 20 2.51428 19.1046 2.51428 18V6C2.51428 4.89543 3.40971 4 4.51428 4H8.51428V6H4.51428V18H8.51428V20Z"
+                fill="currentColor"
+              />
+              <path
+                d="M13.8418 17.385L15.262 15.9768L11.3428 12.0242L20.4857 12.0242C21.038 12.0242 21.4857 11.5765 21.4857 11.0242C21.4857 10.4719 21.038 10.0242 20.4857 10.0242L11.3236 10.0242L15.304 6.0774L13.8958 4.6572L7.5049 10.9941L13.8418 17.385Z"
+                fill="currentColor"
+              />
+            </svg>
+            <p>Welcome, {user.email}!</p>
+          </div>
         ) : (
-          <Link href={"/login"}>Login</Link>
+          <Link href={"/login"} className="flex gap-2 items-center">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="hover:cursor-pointer"
+            >
+              <path
+                d="M15.4857 20H19.4857C20.5903 20 21.4857 19.1046 21.4857 18V6C21.4857 4.89543 20.5903 4 19.4857 4H15.4857V6H19.4857V18H15.4857V20Z"
+                fill="currentColor"
+              />
+              <path
+                d="M10.1582 17.385L8.73801 15.9768L12.6572 12.0242L3.51428 12.0242C2.96199 12.0242 2.51428 11.5765 2.51428 11.0242C2.51429 10.4719 2.962 10.0242 3.51429 10.0242L12.6765 10.0242L8.69599 6.0774L10.1042 4.6572L16.4951 10.9941L10.1582 17.385Z"
+                fill="currentColor"
+              />
+            </svg>
+            <p>Login</p>
+          </Link>
         )}
       </div>
     </div>

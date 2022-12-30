@@ -69,7 +69,7 @@ export default function Home() {
                 </label>
 
                 <input
-                  className="h-5 w-5 rounded border-gray-200 hover:cursor-pointer"
+                  className="h-4 w-4 rounded border-gray-200 hover:cursor-pointer"
                   type="checkbox"
                   id="SelectAll"
                 />
@@ -121,7 +121,7 @@ export default function Home() {
                     </label>
 
                     <input
-                      className="h-5 w-5 rounded border-gray-200 hover:cursor-pointer"
+                      className="h-4 w-4 rounded border-gray-200 hover:cursor-pointer"
                       type="checkbox"
                       id="Row1"
                     />
