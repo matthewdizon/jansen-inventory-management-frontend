@@ -41,9 +41,6 @@ function Transactions() {
     fetchData();
   }, []);
 
-  console.log("s", sellingData);
-  console.log("b", buyingData);
-
   const SellingDataTable = () => {
     return (
       <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
@@ -97,11 +94,12 @@ function Transactions() {
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     {part.items.map((item, index) => {
+                      console.log(item);
                       return (
                         <div key={index} className="flex gap-2">
                           <p>{item.part.name} x</p>
                           <p>{item.quantity} pcs @</p>
-                          <p>50 PHP each</p>
+                          <p>{item.price} PHP each</p>
                         </div>
                       );
                     })}
@@ -184,7 +182,7 @@ function Transactions() {
                         <div key={index} className="flex gap-2">
                           <p>{item.part.name} x</p>
                           <p>{item.quantity} pcs @</p>
-                          <p>50 PHP each</p>
+                          <p>{item.price} PHP each</p>
                         </div>
                       );
                     })}
@@ -233,7 +231,9 @@ function Transactions() {
         <li>
           <div
             className={`${
-              transactionsType === "Selling" ? "border-gray-200 bg-white" : ""
+              transactionsType === "Selling"
+                ? "border-gray-200 bg-white underline"
+                : ""
             } block bg-gray-100 p-4 px-16 text-sm font-medium text-gray-500 ring-1 ring-inset ring-white max-w-max rounded-t-xl hover:cursor-pointer`}
             onClick={() => setTransactionsType("Selling")}
           >
@@ -243,7 +243,9 @@ function Transactions() {
         <li>
           <div
             className={`${
-              transactionsType === "Buying" ? "border-gray-200 bg-white" : ""
+              transactionsType === "Buying"
+                ? "border-gray-200 bg-white underline"
+                : ""
             } block bg-gray-100 p-4 px-16 text-sm font-medium text-gray-500 ring-1 ring-inset ring-white max-w-max rounded-t-xl hover:cursor-pointer`}
             onClick={() => setTransactionsType("Buying")}
           >
