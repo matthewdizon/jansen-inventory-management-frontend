@@ -25,6 +25,12 @@ export default function AddSellingTransactionForm() {
     setItems([...items, { part: "", quantity: "", price: "" }]);
   };
 
+  const handleRemoveItem = (index) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
+  };
+
   const handleSearch = (e) => {
     console.log("e", e);
     const value = e.target.value;
@@ -105,6 +111,8 @@ export default function AddSellingTransactionForm() {
     }
   };
 
+  console.log(items);
+
   return (
     <>
       <form className="grid gap-2" onSubmit={handleSubmit}>
@@ -178,7 +186,7 @@ export default function AddSellingTransactionForm() {
               name="part"
               className="px-4 py-2 rounded-xl"
               placeholder="item name"
-              value={item.item}
+              value={item.part}
               onChange={(e) => handleChange(e, index)}
               onInput={handleSearch}
             />
@@ -203,6 +211,11 @@ export default function AddSellingTransactionForm() {
               value={item.price}
               onChange={(e) => handleChange(e, index)}
             />
+            {items.length > 1 && (
+              <button type="button" onClick={() => handleRemoveItem(index)}>
+                -
+              </button>
+            )}
             {index === items.length - 1 && (
               <button type="button" onClick={handleAddItem}>
                 +
