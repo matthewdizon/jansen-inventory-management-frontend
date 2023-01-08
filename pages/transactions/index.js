@@ -7,6 +7,38 @@ function Transactions() {
   const [buyingData, setBuyingData] = useState(null);
   const [transactionsType, setTransactionsType] = useState("Selling");
 
+  const [showMenu, setShowMenu] = useState(null);
+
+  const toggleMenu = (index) => {
+    if (showMenu === index) {
+      setShowMenu(null);
+    } else {
+      setShowMenu(index);
+    }
+  };
+
+  const deleteSellingTransaction = async (id) => {
+    const jwt = localStorage.getItem("accessToken");
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/transactions/selling/` +
+        id,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    // const json = await res.json();
+
+    // if (res.ok) {
+    //   router.push(router.asPath);
+    // }
+  };
+
   useEffect(() => {
     async function fetchData() {
       // Retrieve the JWT from local storage
@@ -43,7 +75,7 @@ function Transactions() {
 
   const SellingDataTable = () => {
     return (
-      <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
+      <div className="rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
             <tr>
@@ -67,6 +99,9 @@ function Transactions() {
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
                 Charge
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
+                Actions
               </th>
             </tr>
           </thead>
@@ -129,6 +164,98 @@ function Transactions() {
                     }).format(new Date(part.collectionDate))}
                   </td>
                   <td>{part.total - totalPayments}</td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-400">
+                    <div className="inline-flex items-stretch rounded-md border bg-white">
+                      <div className="relative">
+                        <button
+                          type="button"
+                          className="inline-flex h-full items-center justify-center rounded-r-md border-l border-gray-100 px-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700"
+                          onClick={() => toggleMenu(index)}
+                        >
+                          <span className="sr-only">Menu</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+
+                        <div
+                          class={`${
+                            showMenu === index ? "block" : "hidden"
+                          } absolute right-0 z-10 mt-4 w-56 origin-top-right rounded-md border border-gray-100 bg-white shadow-lg`}
+                          role="menu"
+                        >
+                          <div className="flow-root py-2">
+                            <div className="-my-2 divide-y divide-gray-100">
+                              <div className="p-2">
+                                <strong className="block p-2 text-xs font-medium uppercase text-gray-400">
+                                  General
+                                </strong>
+
+                                <Link
+                                  href={`/transactions/${part._id}?type=selling`}
+                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                                  role="menuitem"
+                                  query={{ type: "selling" }}
+                                >
+                                  View Part
+                                </Link>
+
+                                <a
+                                  href="#"
+                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                                  role="menuitem"
+                                >
+                                  Add New Payment
+                                </a>
+                              </div>
+
+                              <div className="p-2">
+                                <strong className="block p-2 text-xs font-medium uppercase text-gray-400">
+                                  Danger Zone
+                                </strong>
+
+                                <div>
+                                  <button
+                                    type="submit"
+                                    className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                                    role="menuitem"
+                                    onClick={() =>
+                                      deleteSellingTransaction(part._id)
+                                    }
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    >
+                                      <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                    Delete Product
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               );
             })}

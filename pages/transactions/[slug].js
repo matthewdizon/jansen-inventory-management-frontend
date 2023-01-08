@@ -7,6 +7,7 @@ function PartSlug() {
 
   const router = useRouter();
   const { slug } = router.query;
+  const { type } = router.query;
 
   useEffect(() => {
     async function fetchData() {
@@ -16,7 +17,8 @@ function PartSlug() {
         const jwt = localStorage.getItem("accessToken");
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/parts/` + slug,
+          `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/transactions/${type}/` +
+            slug,
           {
             headers: {
               Authorization: `Bearer ${jwt}`,
@@ -33,7 +35,7 @@ function PartSlug() {
     }
 
     fetchData();
-  }, [slug]);
+  }, [slug, type]);
 
   console.log(router.query);
   console.log(data);

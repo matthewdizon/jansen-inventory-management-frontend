@@ -165,30 +165,6 @@ function Parts() {
                                 >
                                   View Part
                                 </Link>
-
-                                <a
-                                  href="#"
-                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                                  role="menuitem"
-                                >
-                                  View Warehouse Info
-                                </a>
-
-                                <a
-                                  href="#"
-                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                                  role="menuitem"
-                                >
-                                  Duplicate Product
-                                </a>
-
-                                <a
-                                  href="#"
-                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                                  role="menuitem"
-                                >
-                                  Unpublish Product
-                                </a>
                               </div>
 
                               <div className="p-2">
