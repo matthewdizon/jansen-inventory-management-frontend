@@ -3,15 +3,12 @@ import { useState, useEffect } from "react";
 export default function AddSellingTransactionForm() {
   const [name, setName] = useState("");
   const [transactionDate, setTransactionDate] = useState("");
-  const [items, setItems] = useState([
-    { part: "", quantity: "", price: "", supplier: "" },
-  ]);
+  const [items, setItems] = useState([{ part: "", quantity: "", price: "" }]);
   const [allItems, setAllItems] = useState([]);
   const [itemOptions, setItemOptions] = useState([]);
   const [initialPayment, setInitialPayment] = useState({
     method: "Cash",
     amount: "",
-    date: "",
   });
   const [collectionDate, setCollectionDate] = useState("");
   const [message, setMessage] = useState("");
@@ -25,7 +22,7 @@ export default function AddSellingTransactionForm() {
   };
 
   const handleAddItem = () => {
-    setItems([...items, { part: "", quantity: "", price: "", supplier: "" }]);
+    setItems([...items, { part: "", quantity: "", price: "" }]);
   };
 
   const handleSearch = (e) => {
@@ -73,7 +70,7 @@ export default function AddSellingTransactionForm() {
       date: transactionDate,
       items: items,
       collectionDate: collectionDate,
-      initialPayment: initialPayment,
+      initialPayment: { ...initialPayment, date: transactionDate },
     };
 
     const res = await fetch(
@@ -95,11 +92,10 @@ export default function AddSellingTransactionForm() {
 
       setName("");
       setTransactionDate("");
-      setItems([{ part: "", quantity: "", price: "", supplier: "" }]);
+      setItems([{ part: "", quantity: "", price: "" }]);
       setInitialPayment({
         method: "Cash",
         amount: "",
-        date: "",
       });
       setCollectionDate("");
     } else {
@@ -143,15 +139,6 @@ export default function AddSellingTransactionForm() {
             }
             value={initialPayment.amount}
             placeholder="amount"
-            className="px-4 py-2 rounded-xl"
-          />
-          <input
-            type="date"
-            onChange={(e) =>
-              setInitialPayment({ ...initialPayment, date: e.target.value })
-            }
-            value={initialPayment.date}
-            placeholder="date"
             className="px-4 py-2 rounded-xl"
           />
         </div>
@@ -216,14 +203,6 @@ export default function AddSellingTransactionForm() {
               value={item.price}
               onChange={(e) => handleChange(e, index)}
             />
-            <input
-              type="text"
-              name="supplier"
-              className="px-4 py-2 rounded-xl"
-              placeholder="supplier"
-              value={item.supplier}
-              onChange={(e) => handleChange(e, index)}
-            />
             {index === items.length - 1 && (
               <button type="button" onClick={handleAddItem}>
                 +
@@ -231,7 +210,12 @@ export default function AddSellingTransactionForm() {
             )}
           </div>
         ))}
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase"
+        >
+          Submit
+        </button>
       </form>
       {showMessage && (
         <div className="bg-blue-500 text-white p-4 rounded-xl">{message}</div>
