@@ -154,14 +154,14 @@ export default function AddBuyingTransactionForm() {
               value={item.price}
               onChange={(e) => handleChange(e, index)}
             />
-            <input
+            {/* <input
               type="text"
               name="supplier"
               className="px-4 py-2 rounded-xl"
               placeholder="supplier"
               value={item.supplier}
               onChange={(e) => handleChange(e, index)}
-            />
+            /> */}
             {items.length > 1 && (
               <button type="button" onClick={() => handleRemoveItem(index)}>
                 -
