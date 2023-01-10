@@ -75,7 +75,7 @@ function Transactions() {
 
   const SellingDataTable = () => {
     return (
-      <div className="rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
+      <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
             <tr>
@@ -89,19 +89,13 @@ function Transactions() {
                 Total
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Items Sold
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Payments Made
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
                 Collection Date
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
                 Charge
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Actions
+                View
               </th>
             </tr>
           </thead>
@@ -128,35 +122,6 @@ function Transactions() {
                     {part.total}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {part.items.map((item, index) => {
-                      console.log(item);
-                      return (
-                        <div key={index} className="flex gap-2">
-                          <p>{item.part.name} x</p>
-                          <p>{item.quantity} pcs @</p>
-                          <p>{item.price} PHP each</p>
-                        </div>
-                      );
-                    })}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {part.payments.map((payment, index) => {
-                      return (
-                        <div key={index}>
-                          <p>{payment.method}</p>
-                          <p>{payment.amount}</p>
-                          <p>
-                            {Intl.DateTimeFormat("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }).format(new Date(payment.date))}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     {Intl.DateTimeFormat("en-US", {
                       year: "numeric",
                       month: "long",
@@ -164,97 +129,33 @@ function Transactions() {
                     }).format(new Date(part.collectionDate))}
                   </td>
                   <td>{part.total - totalPayments}</td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-400">
-                    <div className="inline-flex items-stretch rounded-md border bg-white">
-                      <div className="relative">
-                        <button
-                          type="button"
-                          className="inline-flex h-full items-center justify-center rounded-r-md border-l border-gray-100 px-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700"
-                          onClick={() => toggleMenu(index)}
-                        >
-                          <span className="sr-only">Menu</span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
-
-                        <div
-                          class={`${
-                            showMenu === index ? "block" : "hidden"
-                          } absolute right-0 z-10 mt-4 w-56 origin-top-right rounded-md border border-gray-100 bg-white shadow-lg`}
-                          role="menu"
-                        >
-                          <div className="flow-root py-2">
-                            <div className="-my-2 divide-y divide-gray-100">
-                              <div className="p-2">
-                                <strong className="block p-2 text-xs font-medium uppercase text-gray-400">
-                                  General
-                                </strong>
-
-                                <Link
-                                  href={`/transactions/${part._id}?type=selling`}
-                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                                  role="menuitem"
-                                  query={{ type: "selling" }}
-                                >
-                                  View Part
-                                </Link>
-
-                                <a
-                                  href="#"
-                                  className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                                  role="menuitem"
-                                >
-                                  Add New Payment
-                                </a>
-                              </div>
-
-                              <div className="p-2">
-                                <strong className="block p-2 text-xs font-medium uppercase text-gray-400">
-                                  Danger Zone
-                                </strong>
-
-                                <div>
-                                  <button
-                                    type="submit"
-                                    className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
-                                    role="menuitem"
-                                    onClick={() =>
-                                      deleteSellingTransaction(part._id)
-                                    }
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      className="h-4 w-4"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                      stroke-width="2"
-                                    >
-                                      <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                      />
-                                    </svg>
-                                    Delete Product
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <Link
+                      href={`/transactions/${part._id}?type=selling`}
+                      className="block rounded-lg max-w-max px-2 py-1 text-sm text-gray-500 border-[1px] hover:bg-gray-50 hover:text-gray-700"
+                      role="menuitem"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 3C17.5915 3 22.2898 6.82432 23.6219 12C22.2898 17.1757 17.5915 21 12 21C6.40848 21 1.71018 17.1757 0.378052 12C1.71018 6.82432 6.40848 3 12 3ZM12 19C7.52443 19 3.73132 16.0581 2.45723 12C3.73132 7.94186 7.52443 5 12 5C16.4756 5 20.2687 7.94186 21.5428 12C20.2687 16.0581 16.4756 19 12 19Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </Link>
                   </td>
                 </tr>
               );
@@ -282,6 +183,9 @@ function Transactions() {
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
                 Items Purchased
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
+                View
               </th>
             </tr>
           </thead>
@@ -313,6 +217,34 @@ function Transactions() {
                         </div>
                       );
                     })}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    <Link
+                      href={`/transactions/${part._id}?type=buying`}
+                      className="block rounded-lg max-w-max px-2 py-1 text-sm text-gray-500 border-[1px] hover:bg-gray-50 hover:text-gray-700"
+                      role="menuitem"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 3C17.5915 3 22.2898 6.82432 23.6219 12C22.2898 17.1757 17.5915 21 12 21C6.40848 21 1.71018 17.1757 0.378052 12C1.71018 6.82432 6.40848 3 12 3ZM12 19C7.52443 19 3.73132 16.0581 2.45723 12C3.73132 7.94186 7.52443 5 12 5C16.4756 5 20.2687 7.94186 21.5428 12C20.2687 16.0581 16.4756 19 12 19Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </Link>
                   </td>
                 </tr>
               );
