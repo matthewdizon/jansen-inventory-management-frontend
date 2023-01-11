@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 
 export default function AddSellingTransactionForm() {
   const [name, setName] = useState("");
-  const [transactionDate, setTransactionDate] = useState("");
+  const [transactionDate, setTransactionDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
   const [items, setItems] = useState([{ part: "", quantity: "", price: "" }]);
   const [allItems, setAllItems] = useState([]);
   const [itemOptions, setItemOptions] = useState([]);
@@ -37,7 +39,7 @@ export default function AddSellingTransactionForm() {
     console.log("value", value);
     // Filter the list of all items based on the text entered by the user
     const itemOptions = allItems.filter((item) =>
-      item.name.toLowerCase().includes(value.toLowerCase())
+      item?.name?.toLowerCase()?.includes(value.toLowerCase())
     );
     setItemOptions(itemOptions);
   };
@@ -97,7 +99,7 @@ export default function AddSellingTransactionForm() {
       setShowMessage(true);
 
       setName("");
-      setTransactionDate("");
+      setTransactionDate(new Date().toISOString().substring(0, 10));
       setItems([{ part: "", quantity: "", price: "" }]);
       setInitialPayment({
         method: "Cash",
@@ -192,7 +194,7 @@ export default function AddSellingTransactionForm() {
             />
             <datalist id="item-options">
               {itemOptions.map((item) => (
-                <option key={item.name} value={item._id} label={item.name} />
+                <option key={item.name} value={item.name} label={item.name} />
               ))}
             </datalist>
             <input

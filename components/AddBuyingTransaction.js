@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 
 export default function AddBuyingTransactionForm() {
-  const [transactionDate, setTransactionDate] = useState("");
+  const [transactionDate, setTransactionDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
   const [items, setItems] = useState([
     { part: "", quantity: "", price: "", supplier: "" },
   ]);
@@ -34,7 +36,7 @@ export default function AddBuyingTransactionForm() {
     console.log("value", value);
     // Filter the list of all items based on the text entered by the user
     const itemOptions = allItems.filter((item) =>
-      item.name.toLowerCase().includes(value.toLowerCase())
+      item?.name?.toLowerCase()?.includes(value.toLowerCase())
     );
     setItemOptions(itemOptions);
   };
@@ -93,7 +95,7 @@ export default function AddBuyingTransactionForm() {
       setMessage("Successfully added part");
       setShowMessage(true);
 
-      setTransactionDate("");
+      setTransactionDate(new Date().toISOString().substring(0, 10));
       setItems([{ part: "", quantity: "", price: "", supplier: "" }]);
       setDeliveryFee(0);
     } else {
@@ -135,7 +137,7 @@ export default function AddBuyingTransactionForm() {
             />
             <datalist id="item-options">
               {itemOptions.map((item) => (
-                <option key={item.name} value={item._id} label={item.name} />
+                <option key={item.name} value={item.name} label={item.name} />
               ))}
             </datalist>
             <input
@@ -154,14 +156,14 @@ export default function AddBuyingTransactionForm() {
               value={item.price}
               onChange={(e) => handleChange(e, index)}
             />
-            {/* <input
+            <input
               type="text"
               name="supplier"
               className="px-4 py-2 rounded-xl"
               placeholder="supplier"
               value={item.supplier}
               onChange={(e) => handleChange(e, index)}
-            /> */}
+            />
             {items.length > 1 && (
               <button type="button" onClick={() => handleRemoveItem(index)}>
                 -

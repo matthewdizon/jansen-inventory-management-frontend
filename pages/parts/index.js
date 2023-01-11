@@ -120,7 +120,9 @@ function Parts() {
                     {part.quantity}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {part.supplier}
+                    {part.supplier.map((supplier, index) => {
+                      return <p key={index}>{supplier}</p>;
+                    })}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-400">
                     <Link

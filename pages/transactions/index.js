@@ -182,9 +182,6 @@ function Transactions() {
                 Total
               </th>
               <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Items Purchased
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
                 View
               </th>
             </tr>
@@ -192,6 +189,7 @@ function Transactions() {
 
           <tbody className="divide-y divide-gray-200 relative">
             {buyingData?.map((part, index) => {
+              console.log("weird", part.items, part.date);
               return (
                 <tr key={index}>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-900">
@@ -211,7 +209,7 @@ function Transactions() {
                     {part.items.map((item, index) => {
                       return (
                         <div key={index} className="flex gap-2">
-                          <p>{item.part.name} x</p>
+                          <p>{item.part} x</p>
                           <p>{item.quantity} pcs @</p>
                           <p>{item.price} PHP each</p>
                         </div>
