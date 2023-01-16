@@ -47,7 +47,7 @@ function SideNav() {
           <ul className="grid gap-1 font-semibold">
             <Link
               href={"/"}
-              class={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              className={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
                 router.pathname === "/" ? "text-gray-700 bg-gray-100" : ""
               }`}
               // className="flex items-center px-4 py-2 rounded-lg"
@@ -71,7 +71,7 @@ function SideNav() {
             </Link>
             <Link
               href={"/parts"}
-              class={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              className={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
                 router.pathname.includes("/parts")
                   ? "text-gray-700 bg-gray-100"
                   : ""
@@ -96,7 +96,7 @@ function SideNav() {
             </Link>
             <Link
               href={"/transactions"}
-              class={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              className={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
                 router.pathname.includes("/transactions")
                   ? "text-gray-700 bg-gray-100"
                   : ""
@@ -124,7 +124,7 @@ function SideNav() {
             </Link>
             <Link
               href={"/users"}
-              class={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
+              className={`flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${
                 router.pathname.includes("/users")
                   ? "text-gray-700 bg-gray-100"
                   : ""
