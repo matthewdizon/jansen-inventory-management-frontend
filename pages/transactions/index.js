@@ -298,28 +298,105 @@ function Transactions() {
   };
 
   const BuyingDataTable = () => {
+    const [filteredData, setFilteredData] = useState(buyingData);
+    const [sortOrder, setSortOrder] = useState("");
+    const [sortColumn, setSortColumn] = useState("");
+    const headers = ["Date", "Delivery Fee", "Total", "View"];
+
+    useEffect(() => {
+      buyingData && sortData("date", buyingData);
+    }, [buyingData]);
+
+    const sortData = (header, data) => {
+      const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+      setSortOrder(newSortOrder);
+      setSortColumn(header);
+      const sortedData = [...data].sort((a, b) => {
+        let valueA, valueB;
+        let newHeader = header;
+
+        if (header === "delivery fee") newHeader = "deliveryFee";
+
+        if (newHeader === "date") {
+          // Convert to Date
+          valueA = new Date(a[newHeader]);
+          valueB = new Date(b[newHeader]);
+        } else {
+          valueA = a[newHeader];
+          valueB = b[newHeader];
+        }
+        if (sortOrder === "asc") {
+          return valueA > valueB ? 1 : -1;
+        } else {
+          return valueA < valueB ? 1 : -1;
+        }
+      });
+      setFilteredData(sortedData);
+    };
+
     return (
       <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
             <tr>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Date
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Delivery Fee
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                Total
-              </th>
-              <th className="whitespace-nowrap px-4 py-2 text-left text-gray-900">
-                View
-              </th>
+              {headers.map((header, index) => {
+                if (header === "View")
+                  return (
+                    <th
+                      key={index}
+                      className="whitespace-nowrap px-4 py-2 text-left text-gray-900"
+                    >
+                      {header}
+                    </th>
+                  );
+                return (
+                  <th
+                    key={index}
+                    className="whitespace-nowrap px-4 py-2 text-left text-gray-900 hover:cursor-pointer relative"
+                    onClick={() => sortData(header.toLowerCase(), buyingData)}
+                  >
+                    <div>
+                      {header}
+                      {sortColumn === header.toLowerCase() && (
+                        <div className="absolute top-1/2 transform -translate-y-1/2 left-0">
+                          {sortOrder === "asc" ? (
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.0001 3.67157L13.0001 3.67157L13.0001 16.4999L16.2426 13.2574L17.6568 14.6716L12 20.3284L6.34314 14.6716L7.75735 13.2574L11.0001 16.5001L11.0001 3.67157Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M17.6568 8.96219L16.2393 10.3731L12.9843 7.10285L12.9706 20.7079L10.9706 20.7059L10.9843 7.13806L7.75404 10.3532L6.34314 8.93572L12.0132 3.29211L17.6568 8.96219Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-200 relative">
-            {buyingData?.map((part, index) => {
+            {filteredData?.map((part, index) => {
               return (
                 <tr key={index}>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-900">
