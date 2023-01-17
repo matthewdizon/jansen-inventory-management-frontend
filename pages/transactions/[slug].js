@@ -2,9 +2,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import generateSellingPDF from "../../utils/generateSellingPDF";
+import AddNewPayment from "../../components/AddNewPayment";
 
 function PartSlug() {
   const [data, setData] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
   const { slug } = router.query;
@@ -103,7 +105,22 @@ function PartSlug() {
         </div>
         <div className="bg-gray-200 -m-8 p-8 rounded-b-xl grid grid-cols-2">
           <div>
-            <p className="font-bold text-xl">Payments Made</p>
+            <div className="flex items-center gap-4">
+              <p className="font-bold text-xl">Payments Made</p>
+              <div
+                className="bg-white text-gray-600 rounded-md hover:cursor-pointer max-w-max p-2 px-4"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                Add New Payment
+              </div>
+              {isOpen && (
+                <AddNewPayment
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  id={slug}
+                />
+              )}
+            </div>
             {payments.map((payment, index) => {
               return (
                 <div key={index}>
