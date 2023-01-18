@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 export default function AddBuyingTransactionForm() {
   const [transactionDate, setTransactionDate] = useState(
@@ -12,6 +13,7 @@ export default function AddBuyingTransactionForm() {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
+  const { user } = useContext(UserContext);
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -76,6 +78,7 @@ export default function AddBuyingTransactionForm() {
       date: transactionDate,
       items: items,
       deliveryFee: deliveryFee,
+      user: user.email,
     };
 
     const res = await fetch(

@@ -45,12 +45,13 @@ function PartSlug() {
   console.log(data);
 
   const SellingData = () => {
-    const { collectionDate, customer, date, items, payments, total } = data;
+    const { collectionDate, customer, date, items, payments, total, user } =
+      data;
     const totalPayments = payments
       .map((payment) => payment.amount)
       .reduce((sum, price) => sum + price, 0);
     return (
-      <div className="grid gap-4 bg-gray-100 rounded-xl p-8 relative">
+      <div className="grid gap-4 bg-gray-100 rounded-xl px-8 relative">
         <Link
           className="absolute right-4 top-4 bg-white text-gray-600 p-4 rounded-md hover:cursor-pointer"
           href={`/transactions/pdf?slug=${slug}&type=${type}`}
@@ -58,7 +59,7 @@ function PartSlug() {
         >
           Download PDF
         </Link>
-        <div className="grid grid-cols-2 bg-gray-200 -m-8 p-8 rounded-t-xl">
+        <div className="grid grid-cols-2 bg-gray-200 -mx-8 p-8 rounded-t-xl">
           <div>
             <p className="grid">
               <span className="text-xs font-thin uppercase">
@@ -86,8 +87,8 @@ function PartSlug() {
             <p className="font-bold text-4xl">₱{total}</p>
           </div>
         </div>
-        <p className="font-bold text-xl pt-8">Items Sold</p>
-        <div className="pb-8">
+        <p className="font-bold text-xl">Items Sold</p>
+        <div>
           <div className="grid grid-cols-4 font-semibold">
             <p>Part</p>
             <p>Quantity</p>
@@ -105,7 +106,7 @@ function PartSlug() {
             );
           })}
         </div>
-        <div className="bg-gray-200 -m-8 p-8 rounded-b-xl grid grid-cols-2">
+        <div className="bg-gray-200 -mx-8 p-8 grid grid-cols-2">
           <div>
             <div className="flex items-center gap-4">
               <p className="font-bold text-xl">Payments Made</p>
@@ -145,6 +146,20 @@ function PartSlug() {
           <div>
             <span className="text-xs font-thin uppercase">(Charge)</span>{" "}
             <p className="font-bold text-4xl">₱{total - totalPayments}</p>
+          </div>
+        </div>
+        <div className="pb-8 flex justify-between">
+          <div>
+            <span className="text-xs font-thin uppercase">
+              (Invoice Number)
+            </span>{" "}
+            <p className="font-bold">{slug}</p>
+          </div>
+          <div>
+            <span className="text-xs font-thin uppercase">
+              (Transaction Owner)
+            </span>{" "}
+            <p className="font-bold">{user}</p>
           </div>
         </div>
       </div>

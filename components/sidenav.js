@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import Router from "next/router";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { UserContext } from "../context/userContext";
 
 function SideNav() {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
   const router = useRouter();
 
   useEffect(() => {

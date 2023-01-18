@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 export default function AddSellingTransactionForm() {
   const [name, setName] = useState("");
@@ -10,11 +11,12 @@ export default function AddSellingTransactionForm() {
   const [itemOptions, setItemOptions] = useState([]);
   const [initialPayment, setInitialPayment] = useState({
     method: "Cash",
-    amount: "",
+    amount: 0,
   });
   const [collectionDate, setCollectionDate] = useState("");
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
+  const { user } = useContext(UserContext);
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -79,6 +81,7 @@ export default function AddSellingTransactionForm() {
       items: items,
       collectionDate: collectionDate,
       initialPayment: { ...initialPayment, date: transactionDate },
+      user: user.email,
     };
 
     const res = await fetch(
@@ -103,7 +106,7 @@ export default function AddSellingTransactionForm() {
       setItems([{ part: "", quantity: "", price: "" }]);
       setInitialPayment({
         method: "Cash",
-        amount: "",
+        amount: 0,
       });
       setCollectionDate("");
     } else {
