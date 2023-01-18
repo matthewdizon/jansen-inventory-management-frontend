@@ -74,11 +74,19 @@ function convertValuesToString(arr) {
 }
 
 function generateTables(doc, items, payments) {
-  doc.table(10, 50, convertValuesToString(items), itemsHeaders, {
+  doc.text("Items Sold", 10, 50);
+  doc.table(10, 60, convertValuesToString(items), itemsHeaders, {
     autoSize: false,
   });
 
-  doc.table(10, 80, convertValuesToString(payments), paymentsHeaders, {
-    autoSize: false,
-  });
+  doc.text("Payments Made", 10, 90 + 10 * items.length);
+  doc.table(
+    10,
+    100 + 10 * items.length,
+    convertValuesToString(payments),
+    paymentsHeaders,
+    {
+      autoSize: false,
+    }
+  );
 }

@@ -1,17 +1,14 @@
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Layout from "../../components/layout";
-import generateSellingPDF from "../../utils/generateSellingPDF";
-import AddNewPayment from "../../components/AddNewPayment";
-import Link from "next/link";
 
-function PartSlug() {
+function PDF() {
   const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
   const { slug } = router.query;
   const { type } = router.query;
+  console.log(router.query);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,9 +38,6 @@ function PartSlug() {
     fetchData();
   }, [slug, type]);
 
-  console.log(router.query);
-  console.log(data);
-
   const SellingData = () => {
     const { collectionDate, customer, date, items, payments, total } = data;
     const totalPayments = payments
@@ -51,13 +45,6 @@ function PartSlug() {
       .reduce((sum, price) => sum + price, 0);
     return (
       <div className="grid gap-4 bg-gray-100 rounded-xl p-8 relative">
-        <Link
-          className="absolute right-4 top-4 bg-white text-gray-600 p-4 rounded-md hover:cursor-pointer"
-          href={`/transactions/pdf?slug=${slug}&type=${type}`}
-          target="_blank"
-        >
-          Download PDF
-        </Link>
         <div className="grid grid-cols-2 bg-gray-200 -m-8 p-8 rounded-t-xl">
           <div>
             <p className="grid">
@@ -109,19 +96,6 @@ function PartSlug() {
           <div>
             <div className="flex items-center gap-4">
               <p className="font-bold text-xl">Payments Made</p>
-              <div
-                className="bg-white text-gray-600 rounded-md hover:cursor-pointer max-w-max p-2 px-4"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                Add New Payment
-              </div>
-              {isOpen && (
-                <AddNewPayment
-                  isOpen={isOpen}
-                  setIsOpen={setIsOpen}
-                  id={slug}
-                />
-              )}
             </div>
             {payments.map((payment, index) => {
               return (
@@ -156,11 +130,10 @@ function PartSlug() {
   }
 
   return (
-    <Layout>
-      <p className="mb-8">Invoice: {slug}</p>
+    <div className="p-4">
       {type === "selling" ? <SellingData /> : <div>buying</div>}
-    </Layout>
+    </div>
   );
 }
 
-export default PartSlug;
+export default PDF;
