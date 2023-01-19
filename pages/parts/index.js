@@ -8,7 +8,13 @@ function Parts() {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [sortColumn, setSortColumn] = useState("");
-  const headers = ["Name", "Quantity", "Supplier", "View"];
+  const headers = [
+    "Name",
+    "Quantity",
+    "Quantity Threshold",
+    "Supplier",
+    "View",
+  ];
 
   useEffect(() => {
     async function fetchData() {
@@ -144,7 +150,7 @@ function Parts() {
           <thead className="bg-gray-100 font-bold">
             <tr>
               {headers.map((header, index) => {
-                if (header === "View")
+                if (header === "View" || header === "Quantity Threshold")
                   return (
                     <th
                       key={index}
@@ -208,6 +214,9 @@ function Parts() {
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     {part.quantity}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                    {part.quantityThreshold}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                     {part.supplier.map((supplier, index) => {

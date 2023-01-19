@@ -13,7 +13,9 @@ export default function AddSellingTransactionForm() {
     method: "Cash",
     amount: 0,
   });
-  const [collectionDate, setCollectionDate] = useState("");
+  const [collectionDate, setCollectionDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const { user } = useContext(UserContext);
@@ -108,7 +110,7 @@ export default function AddSellingTransactionForm() {
         method: "Cash",
         amount: 0,
       });
-      setCollectionDate("");
+      setCollectionDate(new Date().toISOString().substring(0, 10));
     } else {
       // Set error message
       setMessage("Error: Invalid email or password");

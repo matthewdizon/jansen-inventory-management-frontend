@@ -5,6 +5,7 @@ export default function AddPart() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [supplier, setSupplier] = useState("");
+  const [quantityThreshold, setQuantityThreshold] = useState("");
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
@@ -17,6 +18,7 @@ export default function AddPart() {
       name,
       quantity,
       supplier,
+      quantityThreshold,
     };
 
     const res = await fetch(
@@ -57,13 +59,22 @@ export default function AddPart() {
           placeholder="name"
           className="px-4 py-2 rounded-xl"
         />
-        <input
-          type="number"
-          onChange={(e) => setQuantity(e.target.value)}
-          value={quantity}
-          placeholder="quantity"
-          className="px-4 py-2 rounded-xl"
-        />
+        <div className="flex gap-4">
+          <input
+            type="number"
+            onChange={(e) => setQuantity(e.target.value)}
+            value={quantity}
+            placeholder="quantity"
+            className="px-4 py-2 rounded-xl"
+          />
+          <input
+            type="number"
+            onChange={(e) => setQuantityThreshold(e.target.value)}
+            value={quantityThreshold}
+            placeholder="quantity threshold"
+            className="px-4 py-2 rounded-xl"
+          />
+        </div>
         <input
           type="text"
           onChange={(e) => setSupplier(e.target.value)}
