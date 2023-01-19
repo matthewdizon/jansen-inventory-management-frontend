@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
+import Chart from "../components/Chart";
 
 export default function Home() {
   const [productsCount, setProductsCount] = useState(0);
@@ -74,13 +75,9 @@ export default function Home() {
     fetchData();
   }, []);
 
-  console.log("pc", productsCount);
-  console.log("tmt", transactionsMonthlyTotal);
-  console.log("uaodp", upcomingAndOverduePayments);
-
   return (
     <Layout>
-      <p>Home</p>
+      <p>Home Dashboard</p>
       <div className="grid grid-cols-3 gap-8 my-8">
         <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
           <p className="text-sm font-medium mx-auto">Total Products</p>
@@ -100,9 +97,12 @@ export default function Home() {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-8">
-        <p className="rounded-2xl p-8 bg-gray-100 col-span-2">
-          One graph for both profit and expenses (for the year)
-        </p>
+        <div className="rounded-2xl p-8 bg-gray-100 col-span-2 flex flex-col items-center justify-center mb-auto">
+          <p className="font-bold uppercase text-xl pb-4">
+            Annual Graph (Profit VS Expenses )
+          </p>
+          <Chart />
+        </div>
         <div className="grid gap-8">
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
