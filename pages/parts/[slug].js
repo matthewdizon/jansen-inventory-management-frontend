@@ -38,9 +38,31 @@ function PartSlug() {
   console.log(router.query);
   console.log(data);
 
+  if (!data) return <div>Loading</div>;
+
+  const { quantity, quantityThreshold, name, supplier } = data;
+
   return (
     <Layout>
-      <p>{slug}</p>
+      <p className="mb-8">Part ID: {slug}</p>
+      <div className="grid grid-cols-2 gap-8">
+        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+          <p className="text-sm font-medium mx-auto">Name</p>
+          <p className="text-5xl font-extrabold mx-auto">{name}</p>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+          <p className="text-sm font-medium mx-auto">Supplier</p>
+          <p className="text-5xl font-extrabold mx-auto">{supplier[0]}</p>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+          <p className="text-sm font-medium mx-auto">Quantity</p>
+          <p className="text-5xl font-extrabold mx-auto">{quantity}</p>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+          <p className="text-sm font-medium mx-auto">Quantity Threshold</p>
+          <p className="text-5xl font-extrabold mx-auto">{quantityThreshold}</p>
+        </div>
+      </div>
     </Layout>
   );
 }

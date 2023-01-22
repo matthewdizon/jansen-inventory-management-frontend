@@ -51,15 +51,15 @@ function PartSlug() {
       .map((payment) => payment.amount)
       .reduce((sum, price) => sum + price, 0);
     return (
-      <div className="grid gap-4 bg-gray-100 rounded-xl px-8 relative">
-        <Link
-          className="absolute right-4 top-4 bg-white text-gray-600 p-4 rounded-md hover:cursor-pointer"
-          href={`/transactions/pdf?slug=${slug}&type=${type}`}
-          target="_blank"
-        >
-          Download PDF
-        </Link>
-        <div className="grid grid-cols-2 bg-gray-200 -mx-8 p-8 rounded-t-xl">
+      <div className="grid bg-white rounded-xl relative divide-y-2 p-8 px-16">
+        <div className="grid grid-cols-2 rounded-t-xl py-8">
+          <Link
+            className="absolute right-4 top-4 bg-gray-200 text-gray-600 p-4 rounded-md hover:cursor-pointer"
+            href={`/transactions/pdf?slug=${slug}&type=${type}`}
+            target="_blank"
+          >
+            Download PDF
+          </Link>
           <div>
             <p className="grid">
               <span className="text-xs font-thin uppercase">
@@ -87,8 +87,8 @@ function PartSlug() {
             <p className="font-bold text-4xl">₱{total}</p>
           </div>
         </div>
-        <p className="font-bold text-xl">Items Sold</p>
-        <div>
+        <div className="py-8">
+          <p className="font-bold text-xl">Items Sold</p>
           <div className="grid grid-cols-4 font-semibold">
             <p>Part</p>
             <p>Quantity</p>
@@ -106,12 +106,12 @@ function PartSlug() {
             );
           })}
         </div>
-        <div className="bg-gray-200 -mx-8 p-8 grid grid-cols-2">
+        <div className="grid grid-cols-2 py-8">
           <div>
             <div className="flex items-center gap-4">
               <p className="font-bold text-xl">Payments Made</p>
               <div
-                className="bg-white text-gray-600 rounded-md hover:cursor-pointer max-w-max p-2 px-4"
+                className="bg-gray-200 text-gray-600 rounded-md hover:cursor-pointer max-w-max p-2 px-4"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 Add New Payment
@@ -137,7 +137,10 @@ function PartSlug() {
                     )
                   </p>
                   <p>
-                    ₱{payment.amount} payment made through {payment.method}
+                    <span className="font-extrabold text-lg">
+                      ₱{payment.amount}
+                    </span>{" "}
+                    payment made through {payment.method}
                   </p>
                 </div>
               );
@@ -148,7 +151,80 @@ function PartSlug() {
             <p className="font-bold text-4xl">₱{total - totalPayments}</p>
           </div>
         </div>
-        <div className="pb-8 flex justify-between">
+        <div className="py-8 flex justify-between">
+          <div>
+            <span className="text-xs font-thin uppercase">
+              (Invoice Number)
+            </span>{" "}
+            <p className="font-bold">{slug}</p>
+          </div>
+          <div>
+            <span className="text-xs font-thin uppercase">
+              (Transaction Owner)
+            </span>{" "}
+            <p className="font-bold">{user}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const BuyingData = () => {
+    const { date, items, total, user, deliveryFee } = data;
+
+    return (
+      <div className="grid bg-white rounded-xl relative divide-y-2 p-8 px-16">
+        <div className="grid grid-cols-2 rounded-t-xl py-8">
+          <Link
+            className="absolute right-4 top-4 bg-gray-200 text-gray-600 p-4 rounded-md hover:cursor-pointer"
+            href={`/transactions/pdf?slug=${slug}&type=${type}`}
+            target="_blank"
+          >
+            Download PDF
+          </Link>
+          <div>
+            <p className="grid">
+              <span className="text-xs font-thin uppercase">
+                (Date of Transaction)
+              </span>
+            </p>
+            <p className="font-bold text-4xl">
+              {Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }).format(new Date(date))}{" "}
+            </p>
+          </div>
+          <div>
+            <p className="grid">
+              <span className="text-xs font-thin uppercase">
+                (Total Payment Made)
+              </span>
+            </p>
+            <p className="font-bold text-4xl">₱{total}</p>
+          </div>
+        </div>
+        <div className="py-8">
+          <p className="font-bold text-xl">Items Sold</p>
+          <div className="grid grid-cols-4 font-semibold">
+            <p>Part</p>
+            <p>Quantity</p>
+            <p>Price</p>
+            <p>Subtotal</p>
+          </div>
+          {items.map((item, index) => {
+            return (
+              <div key={index} className="grid grid-cols-4">
+                <p>{item.part}</p>
+                <p>{item.quantity} pcs</p>
+                <p>₱{item.price} each</p>
+                <p>₱{item.price * item.quantity}</p>
+              </div>
+            );
+          })}
+        </div>
+        <div className="py-8 flex justify-between">
           <div>
             <span className="text-xs font-thin uppercase">
               (Invoice Number)
@@ -173,7 +249,7 @@ function PartSlug() {
   return (
     <Layout>
       <p className="mb-8">Invoice: {slug}</p>
-      {type === "selling" ? <SellingData /> : <div>buying</div>}
+      {type === "selling" ? <SellingData /> : <BuyingData />}
     </Layout>
   );
 }
