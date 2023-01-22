@@ -38,7 +38,7 @@ function SideNav() {
   };
 
   return (
-    <div className="w-[20vw] p-8 flex flex-col justify-between text-[#5f6c7b]">
+    <div className="fixed h-screen bg-white w-[20vw] p-8 flex flex-col justify-between text-[#5f6c7b] col-span-4">
       <div className="grid gap-4">
         <h1 className="font-bold uppercase text-3xl text-[#094067]">
           Autobest

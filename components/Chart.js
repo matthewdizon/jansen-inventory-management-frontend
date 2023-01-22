@@ -1,7 +1,10 @@
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 
-export default function ChartComponent() {
+export default function ChartComponent({ data }) {
+  console.log("CHART DATA", data);
+  const { expensesPerMonth, profitPerMonth } = data;
+
   return (
     <Line
       datasetIdKey="id"
@@ -14,22 +17,22 @@ export default function ChartComponent() {
           "May",
           "June",
           "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
+          "Aug",
+          "Sept",
+          "Oct",
+          "Nov",
+          "Dec",
         ],
         datasets: [
           {
             id: 1,
             label: "Profit",
-            data: [5, 6, 7],
+            data: profitPerMonth,
           },
           {
             id: 2,
             label: "Expenses",
-            data: [3, 2, 1],
+            data: expensesPerMonth,
           },
         ],
       }}

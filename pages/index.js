@@ -12,6 +12,7 @@ export default function Home() {
     []
   );
   const [lowQuantityParts, setLowQuantityParts] = useState([]);
+  const [profitPerMonth, setProfitPerMonth] = useState({});
 
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +20,7 @@ export default function Home() {
       const jwt = localStorage.getItem("accessToken");
 
       try {
-        const [api1, api2, api3, api4] = await Promise.all([
+        const [api1, api2, api3, api4, api5] = await Promise.all([
           fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/productsCount`,
             {
@@ -52,12 +53,21 @@ export default function Home() {
               },
             }
           ),
+          fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/getProfitPerMonth`,
+            {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          ),
         ]);
         const data = await Promise.all([
           api1.json(),
           api2.json(),
           api3.json(),
           api4.json(),
+          api5.json(),
         ]);
         console.log("HERE HERE HERE", data);
         setProductsCount(data[0].count);
@@ -67,6 +77,7 @@ export default function Home() {
         });
         setUpcomingAndOverduePayments(data[2].payments);
         setLowQuantityParts(data[3].parts);
+        setProfitPerMonth(data[4]);
       } catch (error) {
         console.log(error);
       }
@@ -75,35 +86,56 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   return (
     <Layout>
       <p>Home Dashboard</p>
-      <div className="grid grid-cols-3 gap-8 my-8">
-        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
-          <p className="text-sm font-medium mx-auto">Total Products</p>
-          <p className="text-5xl font-extrabold mx-auto">{productsCount}</p>
+      <div className="flex flex-col gap-8 my-8">
+        <div className="grid grid-cols-3 gap-8">
+          <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+            <p className="text-sm font-medium mx-auto">Total Products</p>
+            <p className="text-5xl font-extrabold mx-auto">{productsCount}</p>
+          </div>
+          <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+            <p className="text-sm font-medium mx-auto">
+              Total Profit for {monthNames[currentMonth]}
+            </p>
+            <p className="text-5xl font-extrabold mx-auto">
+              ₱{transactionsMonthlyTotal.totalProfit.toLocaleString()}
+            </p>
+          </div>
+          <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
+            <p className="text-sm font-medium mx-auto">
+              Total Expenses for {monthNames[currentMonth]}
+            </p>
+            <p className="text-5xl font-extrabold mx-auto">
+              ₱{transactionsMonthlyTotal.totalExpenses.toLocaleString()}
+            </p>
+          </div>
         </div>
-        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
-          <p className="text-sm font-medium mx-auto">Total Profit</p>
-          <p className="text-5xl font-extrabold mx-auto">
-            ₱{transactionsMonthlyTotal.totalProfit.toLocaleString()}
-          </p>
-        </div>
-        <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
-          <p className="text-sm font-medium mx-auto">Total Expenses</p>
-          <p className="text-5xl font-extrabold mx-auto">
-            ₱{transactionsMonthlyTotal.totalExpenses.toLocaleString()}
-          </p>
-        </div>
-      </div>
-      <div className="grid grid-cols-3 gap-8">
-        <div className="rounded-2xl p-8 bg-gray-100 col-span-2 flex flex-col items-center justify-center mb-auto">
+        <div className="rounded-2xl p-8 bg-gray-100 col-span-2 flex flex-col items-center justify-center">
           <p className="font-bold uppercase text-xl pb-4">
             Annual Graph (Profit VS Expenses )
           </p>
-          <Chart />
+          <Chart data={profitPerMonth} />
         </div>
-        <div className="grid gap-8">
+        <div className="grid grid-cols-2 gap-8">
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
               Low Quantity Parts
@@ -131,7 +163,7 @@ export default function Home() {
             <p className="font-bold uppercase text-xl pb-4">
               Upcoming Payments
             </p>
-            <div className="grid divide-y-2">
+            <div className="grid divide-y-2 h-64 overflow-auto">
               {upcomingAndOverduePayments?.map((payment, index) => {
                 const totalPayments = payment.payments
                   .map((payment) => payment.amount)
