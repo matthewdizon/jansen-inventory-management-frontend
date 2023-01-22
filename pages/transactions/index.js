@@ -78,6 +78,55 @@ function Transactions() {
     const [search, setSearch] = useState("");
     const [sortOrder, setSortOrder] = useState("");
     const [sortColumn, setSortColumn] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    const filterData = () => {
+      let searchedData = sellingData;
+
+      // filter by date
+      if (startDate || endDate) {
+        if (startDate && endDate) {
+          searchedData = searchedData?.filter((data) => {
+            return (
+              new Date(data.date) >= new Date(startDate) &&
+              new Date(data.date) <= new Date(endDate)
+            );
+          });
+        } else if (startDate) {
+          searchedData = searchedData?.filter((data) => {
+            return new Date(data.date) >= new Date(startDate);
+          });
+        } else if (endDate) {
+          searchedData = searchedData?.filter((data) => {
+            return new Date(data.date) <= new Date(endDate);
+          });
+        }
+      }
+
+      // filter by customer name
+      searchedData = searchedData?.filter((data) => {
+        return data.customer.toLowerCase().includes(search.toLowerCase());
+      });
+
+      setFilteredData(searchedData);
+    };
+
+    function handleSearchCriteriaChange(search) {
+      setSearch(search);
+      filterData();
+    }
+
+    function handleStartDateChange(e) {
+      setStartDate(e.target.value);
+      filterData();
+    }
+
+    function handleEndDateChange(e) {
+      setEndDate(e.target.value);
+      filterData();
+    }
+
     const headers = [
       "Customer",
       "Transaction Date",
@@ -88,16 +137,12 @@ function Transactions() {
     ];
 
     useEffect(() => {
+      filterData();
+    }, [search, startDate, endDate]);
+
+    useEffect(() => {
       sellingData && sortData("transaction date", sellingData);
     }, [sellingData]);
-
-    function handleSearchCriteriaChange(search) {
-      setSearch(search);
-      const searchedData = sellingData?.filter((data) => {
-        return data.customer.toLowerCase().includes(search.toLocaleLowerCase());
-      });
-      setFilteredData(searchedData);
-    }
 
     const sortData = (header, data) => {
       const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
@@ -146,7 +191,7 @@ function Transactions() {
 
     return (
       <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <div className="flex relative items-center">
             <svg
               width="24"
@@ -171,6 +216,30 @@ function Transactions() {
               placeholder="Search Customer"
             />
           </div>
+          <div className="flex gap-4">
+            <div>
+              <label className="block text-gray-700 font-medium">
+                Start Date
+              </label>
+              <input
+                type="date"
+                className="w-full border-gray-400 border p-2 rounded-lg"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium">
+                End Date
+              </label>
+              <input
+                type="date"
+                className="w-full border-gray-400 border p-2 rounded-lg"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
+          </div>
         </div>
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
@@ -189,7 +258,7 @@ function Transactions() {
                   <th
                     key={index}
                     className="whitespace-nowrap px-4 py-2 text-left text-gray-900 hover:cursor-pointer relative"
-                    onClick={() => sortData(header.toLowerCase(), sellingData)}
+                    onClick={() => sortData(header.toLowerCase(), filteredData)}
                   >
                     <div>
                       {header}
