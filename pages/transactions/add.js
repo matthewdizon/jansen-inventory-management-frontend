@@ -2,99 +2,15 @@ import { useState } from "react";
 import Layout from "../../components/layout";
 import AddSellingTransactionForm from "../../components/AddSellingTransaction";
 import AddBuyingTransactionForm from "../../components/AddBuyingTransaction";
+import { useRouter } from "next/router";
 
 export default function AddTransaction() {
-  const [transactionsType, setTransactionsType] = useState("Selling");
+  const router = useRouter();
+  const { type } = router.query;
 
-  // const SellingTransactionForm = () => {
-  //   return (
-  //     <form onSubmit={handleSubmit} className="grid gap-2">
-  //       <input
-  //         type="text"
-  //         onChange={(e) => setName(e.target.value)}
-  //         value={name}
-  //         placeholder="customer name"
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <label>date of transaction</label>
-  //       <input
-  //         type="date"
-  //         // onChange={(e) => setQuantity(e.target.value)}
-  //         // value={quantity}
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <input
-  //         type="text"
-  //         onChange={(e) => setSupplier(e.target.value)}
-  //         value={supplier}
-  //         placeholder="items"
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <label>initial payment</label>
-  //       <div>
-  //         <select>
-  //           <option value="Cash">Cash</option>
-  //           <option value="Check">Check</option>
-  //         </select>
-  //         <input
-  //           type="number"
-  //           onChange={(e) => setSupplier(e.target.value)}
-  //           value={supplier}
-  //           placeholder="amount"
-  //           className="px-4 py-2 rounded-xl"
-  //         />
-  //         <input
-  //           type="date"
-  //           onChange={(e) => setSupplier(e.target.value)}
-  //           value={supplier}
-  //           placeholder="date"
-  //           className="px-4 py-2 rounded-xl"
-  //         />
-  //       </div>
-  //       <label>collection date</label>
-  //       <input
-  //         type="date"
-  //         // onChange={(e) => setQuantity(e.target.value)}
-  //         // value={quantity}
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <button className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase">
-  //         Add Selling Transaction
-  //       </button>
-  //     </form>
-  //   );
-  // };
-
-  // const BuyingTransactionForm = () => {
-  //   return (
-  //     <form onSubmit={handleSubmit} className="grid gap-2">
-  //       <input
-  //         type="text"
-  //         onChange={(e) => setName(e.target.value)}
-  //         value={name}
-  //         placeholder="name"
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <input
-  //         type="number"
-  //         onChange={(e) => setQuantity(e.target.value)}
-  //         value={quantity}
-  //         placeholder="quantity"
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <input
-  //         type="text"
-  //         onChange={(e) => setSupplier(e.target.value)}
-  //         value={supplier}
-  //         placeholder="supplier"
-  //         className="px-4 py-2 rounded-xl"
-  //       />
-  //       <button className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase">
-  //         Add Buying Transaction
-  //       </button>
-  //     </form>
-  //   );
-  // };
+  const [transactionsType, setTransactionsType] = useState(
+    type === "buying" ? "Buying" : "Selling"
+  );
 
   return (
     <Layout>

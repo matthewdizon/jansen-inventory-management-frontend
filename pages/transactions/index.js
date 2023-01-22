@@ -454,7 +454,9 @@ function Transactions() {
       <div className="flex items-center justify-between pb-4">
         <h1 className="font-bold text-[#094067]">Transactions</h1>
         <Link
-          href={"/transactions/add"}
+          href={`/transactions/add${
+            transactionsType === "Buying" ? "?type=buying" : ""
+          }`}
           className="flex items-center bg-[#90b4ce] text-[#fffffe] rounded-lg p-2 px-4 gap-2 hover:opacity-50 duration-500 transition"
         >
           <svg

@@ -138,7 +138,7 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-8">
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
-              Low Quantity Parts
+              Low Quantity Parts ({lowQuantityParts.length})
             </p>
             {lowQuantityParts.length !== 0 && (
               <div className="grid grid-cols-3 py-1 font-bold text-xs uppercase">
@@ -147,23 +147,23 @@ export default function Home() {
                 <p>Threshold</p>
               </div>
             )}
-            <div>
+            <div className="grid divide-y-2">
               {lowQuantityParts.map((part, index) => {
                 return (
-                  <div key={index} className="grid grid-cols-3 py-1">
+                  <li key={index} className="grid grid-cols-3 py-1">
                     <p>{part.name}</p>
                     <p>{part.quantity}</p>
                     <p>{part.quantityThreshold}</p>
-                  </div>
+                  </li>
                 );
               })}
             </div>
           </div>
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
-              Upcoming Payments
+              Upcoming Payments ({upcomingAndOverduePayments.length})
             </p>
-            <div className="grid divide-y-2 h-64 overflow-auto">
+            <div className="grid divide-y-2 h-64 pr-4 overflow-auto">
               {upcomingAndOverduePayments?.map((payment, index) => {
                 const totalPayments = payment.payments
                   .map((payment) => payment.amount)
