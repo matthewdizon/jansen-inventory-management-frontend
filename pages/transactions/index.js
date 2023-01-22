@@ -191,7 +191,7 @@ function Transactions() {
 
     return (
       <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center p-6 justify-between">
           <div className="flex relative items-center">
             <svg
               width="24"
@@ -212,7 +212,7 @@ function Transactions() {
               type="text"
               value={search}
               onChange={(e) => handleSearchCriteriaChange(e.target.value)}
-              className="bg-gray-100 max-w-max m-4 rounded-2xl p-4 placeholder-gray-400 text-gray-500 border-gray-200 border-2 pl-10"
+              className="bg-gray-100 rounded-2xl p-4 placeholder-gray-400 text-gray-500 border-gray-200 border-2 pl-16"
               placeholder="Search Customer"
             />
           </div>
@@ -370,7 +370,54 @@ function Transactions() {
     const [filteredData, setFilteredData] = useState(buyingData);
     const [sortOrder, setSortOrder] = useState("");
     const [sortColumn, setSortColumn] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const headers = ["Date", "Delivery Fee", "Total", "View"];
+
+    const filterData = () => {
+      let searchedData = buyingData;
+
+      // filter by date
+      if (startDate || endDate) {
+        if (startDate && endDate) {
+          searchedData = searchedData?.filter((data) => {
+            return (
+              new Date(data.date) >= new Date(startDate) &&
+              new Date(data.date) <= new Date(endDate)
+            );
+          });
+        } else if (startDate) {
+          searchedData = searchedData?.filter((data) => {
+            return new Date(data.date) >= new Date(startDate);
+          });
+        } else if (endDate) {
+          searchedData = searchedData?.filter((data) => {
+            return new Date(data.date) <= new Date(endDate);
+          });
+        }
+      }
+
+      setFilteredData(searchedData);
+    };
+
+    function handleSearchCriteriaChange(search) {
+      setSearch(search);
+      filterData();
+    }
+
+    function handleStartDateChange(e) {
+      setStartDate(e.target.value);
+      filterData();
+    }
+
+    function handleEndDateChange(e) {
+      setEndDate(e.target.value);
+      filterData();
+    }
+
+    useEffect(() => {
+      filterData();
+    }, [startDate, endDate]);
 
     useEffect(() => {
       buyingData && sortData("date", buyingData);
@@ -405,6 +452,32 @@ function Transactions() {
 
     return (
       <div className="overflow-hidden overflow-x-auto rounded-b-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
+        <div className="flex gap-4 items-center p-6 justify-between">
+          <div className="flex gap-4">
+            <div>
+              <label className="block text-gray-700 font-medium">
+                Start Date
+              </label>
+              <input
+                type="date"
+                className="w-full border-gray-400 border p-2 rounded-lg"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium">
+                End Date
+              </label>
+              <input
+                type="date"
+                className="w-full border-gray-400 border p-2 rounded-lg"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
+            </div>
+          </div>
+        </div>
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-100 font-bold">
             <tr>
@@ -422,7 +495,7 @@ function Transactions() {
                   <th
                     key={index}
                     className="whitespace-nowrap px-4 py-2 text-left text-gray-900 hover:cursor-pointer relative"
-                    onClick={() => sortData(header.toLowerCase(), buyingData)}
+                    onClick={() => sortData(header.toLowerCase(), filteredData)}
                   >
                     <div>
                       {header}
