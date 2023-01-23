@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import Chart from "../components/Chart";
+import Link from "next/link";
 
 export default function Home() {
   const [productsCount, setProductsCount] = useState(0);
@@ -150,11 +151,15 @@ export default function Home() {
             <div className="grid divide-y-2">
               {lowQuantityParts.map((part, index) => {
                 return (
-                  <li key={index} className="grid grid-cols-3 py-1">
+                  <Link
+                    key={index}
+                    className="grid grid-cols-3 py-1 hover:bg-gray-200 p-2"
+                    href={`/parts/${part._id}`}
+                  >
                     <p>{part.name}</p>
                     <p>{part.quantity}</p>
                     <p>{part.quantityThreshold}</p>
-                  </li>
+                  </Link>
                 );
               })}
             </div>
@@ -174,7 +179,11 @@ export default function Home() {
                   payment.collectionDate;
 
                 return (
-                  <div key={index} className="py-1">
+                  <Link
+                    key={index}
+                    className="py-1 hover:bg-gray-200 p-2"
+                    href={`/transactions/${payment._id}?type=selling`}
+                  >
                     <div
                       className={`${
                         isAfterToday ? "text-red-400" : ""
@@ -193,7 +202,7 @@ export default function Home() {
                       <p>{payment.customer}</p>
                       <p>₱{(payment.total - totalPayments).toLocaleString()}</p>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
