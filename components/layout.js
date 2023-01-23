@@ -1,6 +1,13 @@
 import SideNav from "./sidenav";
+import { UserContext } from "../context/userContext";
+import { useContext } from "react";
+import Login from "../pages/login";
 
 function Layout({ children }) {
+  const { user } = useContext(UserContext);
+
+  if (!user) return <Login />;
+
   return (
     <div className="flex relative">
       <SideNav />
