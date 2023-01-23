@@ -45,27 +45,6 @@ function Parts() {
     data && sortData("name", data);
   }, [data]);
 
-  const deletePart = async (id) => {
-    const jwt = localStorage.getItem("accessToken");
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/parts/` + id,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-
-    // const json = await res.json();
-
-    // if (res.ok) {
-    //   router.push(router.asPath);
-    // }
-  };
-
   function handleSearchCriteriaChange(search) {
     setSearch(search);
     const searchedData = data?.filter((data) => {
@@ -120,7 +99,7 @@ function Parts() {
         </Link>
       </div>
       <div className="overflow-hidden overflow-x-auto rounded-xl border border-gray-200 shadow-lg w-full bg-[#fffffe]">
-        <div className="flex gap-4">
+        <div className="flex gap-4 p-6">
           <div className="flex relative items-center">
             <svg
               width="24"
@@ -141,7 +120,7 @@ function Parts() {
               type="text"
               value={search}
               onChange={(e) => handleSearchCriteriaChange(e.target.value)}
-              className="bg-gray-100 max-w-max m-4 rounded-2xl p-4 placeholder-gray-400 text-gray-500 border-gray-200 border-2 pl-10"
+              className="bg-gray-100 rounded-2xl p-4 placeholder-gray-400 text-gray-500 border-gray-200 border-2 pl-16"
               placeholder="Search Part"
             />
           </div>
@@ -219,9 +198,7 @@ function Parts() {
                     {part.quantityThreshold}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    {part.supplier.map((supplier, index) => {
-                      return <p key={index}>{supplier}</p>;
-                    })}
+                    {part.supplier}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-400">
                     <Link
