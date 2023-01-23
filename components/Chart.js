@@ -3,7 +3,7 @@ import Chart from "chart.js/auto";
 
 export default function ChartComponent({ data }) {
   console.log("CHART DATA", data);
-  const { expensesPerMonth, profitPerMonth } = data;
+  const { expensesPerMonth, profitPerMonth } = data || {};
 
   return (
     <Line

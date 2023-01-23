@@ -4,6 +4,7 @@ import Layout from "../../components/layout";
 import generateSellingPDF from "../../utils/generateSellingPDF";
 import AddNewPayment from "../../components/AddNewPayment";
 import Link from "next/link";
+import useSWR from "swr";
 
 function PartSlug() {
   const [data, setData] = useState(null);
@@ -12,6 +13,27 @@ function PartSlug() {
   const router = useRouter();
   const { slug } = router.query;
   const { type } = router.query;
+
+  let jwt;
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("accessToken");
+  }
+
+  const { data: swrData, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/transactions/${type}/` +
+      slug,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
+  );
+
+  console.log("swrswrswr", swrData);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,7 +68,7 @@ function PartSlug() {
 
   const SellingData = () => {
     const { collectionDate, customer, date, items, payments, total, user } =
-      data;
+      swrData;
     const totalPayments = payments
       .map((payment) => payment.amount)
       .reduce((sum, price) => sum + price, 0);
@@ -170,7 +192,7 @@ function PartSlug() {
   };
 
   const BuyingData = () => {
-    const { date, items, total, user, deliveryFee } = data;
+    const { date, items, total, user, deliveryFee } = swrData;
 
     return (
       <div className="grid bg-white rounded-xl relative divide-y-2 p-8 px-16">
@@ -242,7 +264,7 @@ function PartSlug() {
     );
   };
 
-  if (!data) {
+  if (!swrData) {
     return <div>Loading</div>;
   }
 

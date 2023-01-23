@@ -2,18 +2,95 @@ import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import Chart from "../components/Chart";
 import Link from "next/link";
+import useSWR from "swr";
 
 export default function Home() {
-  const [productsCount, setProductsCount] = useState(0);
-  const [transactionsMonthlyTotal, setTransactionsMonthlyTotal] = useState({
-    totalProfit: 0,
-    totalExpenses: 0,
-  });
-  const [upcomingAndOverduePayments, setUpcomingAndOverduePayments] = useState(
-    []
+  // const [productsCount, setProductsCount] = useState(0);
+  // const [transactionsMonthlyTotal, setTransactionsMonthlyTotal] = useState({
+  //   totalProfit: 0,
+  //   totalExpenses: 0,
+  // });
+  // const [upcomingAndOverduePayments, setUpcomingAndOverduePayments] = useState(
+  //   []
+  // );
+  // const [lowQuantityParts, setLowQuantityParts] = useState([]);
+  // const [profitPerMonth, setProfitPerMonth] = useState({});
+
+  let jwt;
+  if (typeof window !== "undefined") {
+    jwt = localStorage.getItem("accessToken");
+  }
+
+  const { data: productsCount, error: productsCountError } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/productsCount`,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
   );
-  const [lowQuantityParts, setLowQuantityParts] = useState([]);
-  const [profitPerMonth, setProfitPerMonth] = useState({});
+
+  const {
+    data: transactionsMonthlyTotal,
+    error: transactionsMonthlyTotalError,
+  } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/transactionsMonthlyTotal`,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
+  );
+
+  const {
+    data: upcomingAndOverduePayments,
+    error: upcomingAndOverduePaymentsError,
+  } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/upcomingAndOverduePayments`,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
+  );
+
+  const { data: lowQuantityParts, error: lowQuantityPartsError } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/lowQuantityParts`,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
+  );
+
+  const { data: profitPerMonth, error: profitPerMonthError } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER}/api/dashboard/getProfitPerMonth`,
+    (url) =>
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }).then((response) => response.json()),
+    {
+      refreshInterval: 1000,
+    }
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -71,7 +148,7 @@ export default function Home() {
           api5.json(),
         ]);
         console.log("HERE HERE HERE", data);
-        setProductsCount(data[0].count);
+        // setProductsCount(data[0].count);
         setTransactionsMonthlyTotal({
           totalProfit: data[1].totalProfit,
           totalExpenses: data[1].totalExpenses,
@@ -104,6 +181,8 @@ export default function Home() {
     "December",
   ];
 
+  console.log("PCOUNT", productsCount);
+
   return (
     <Layout>
       <p>Home Dashboard</p>
@@ -111,14 +190,16 @@ export default function Home() {
         <div className="grid grid-cols-3 gap-8">
           <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
             <p className="text-sm font-medium mx-auto">Total Products</p>
-            <p className="text-5xl font-extrabold mx-auto">{productsCount}</p>
+            <p className="text-5xl font-extrabold mx-auto">
+              {productsCount?.count}
+            </p>
           </div>
           <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
             <p className="text-sm font-medium mx-auto">
               Total Profit for {monthNames[currentMonth]}
             </p>
             <p className="text-5xl font-extrabold mx-auto">
-              ₱{transactionsMonthlyTotal.totalProfit.toLocaleString()}
+              ₱{transactionsMonthlyTotal?.totalProfit.toLocaleString()}
             </p>
           </div>
           <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
@@ -126,22 +207,22 @@ export default function Home() {
               Total Expenses for {monthNames[currentMonth]}
             </p>
             <p className="text-5xl font-extrabold mx-auto">
-              ₱{transactionsMonthlyTotal.totalExpenses.toLocaleString()}
+              ₱{transactionsMonthlyTotal?.totalExpenses.toLocaleString()}
             </p>
           </div>
         </div>
         <div className="rounded-2xl p-8 bg-gray-100 col-span-2 flex flex-col items-center justify-center">
           <p className="font-bold uppercase text-xl pb-4">
-            Annual Graph (Profit VS Expenses )
+            Annual Graph (Profit VS Expenses)
           </p>
           <Chart data={profitPerMonth} />
         </div>
         <div className="grid grid-cols-2 gap-8">
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
-              Low Quantity Parts ({lowQuantityParts.length})
+              Low Quantity Parts ({lowQuantityParts?.parts.length})
             </p>
-            {lowQuantityParts.length !== 0 && (
+            {lowQuantityParts?.length !== 0 && (
               <div className="grid grid-cols-3 py-1 font-bold text-xs uppercase">
                 <p>Part</p>
                 <p>Quantity</p>
@@ -149,7 +230,7 @@ export default function Home() {
               </div>
             )}
             <div className="grid divide-y-2">
-              {lowQuantityParts.map((part, index) => {
+              {lowQuantityParts?.parts.map((part, index) => {
                 return (
                   <Link
                     key={index}
@@ -166,45 +247,51 @@ export default function Home() {
           </div>
           <div className="rounded-2xl p-8 bg-gray-100">
             <p className="font-bold uppercase text-xl pb-4">
-              Upcoming Payments ({upcomingAndOverduePayments.length})
+              Overdue/Upcoming Payments (
+              {upcomingAndOverduePayments?.paymentsWithCharge.length})
             </p>
             <div className="grid divide-y-2 h-64 pr-4 overflow-auto">
-              {upcomingAndOverduePayments?.map((payment, index) => {
-                const totalPayments = payment.payments
-                  .map((payment) => payment.amount)
-                  .reduce((sum, price) => sum + price, 0);
+              {upcomingAndOverduePayments?.paymentsWithCharge.map(
+                (payment, index) => {
+                  console.log("PAYMENT ITEM", payment);
+                  const totalPayments = payment.payments
+                    .map((payment) => payment.amount)
+                    .reduce((sum, price) => sum + price, 0);
 
-                const isAfterToday =
-                  new Date().toISOString().substring(0, 10) >
-                  payment.collectionDate;
+                  const isAfterToday =
+                    new Date().toISOString().substring(0, 10) >
+                    payment.collectionDate;
 
-                return (
-                  <Link
-                    key={index}
-                    className="py-1 hover:bg-gray-200 p-2"
-                    href={`/transactions/${payment._id}?type=selling`}
-                  >
-                    <div
-                      className={`${
-                        isAfterToday ? "text-red-400" : ""
-                      } flex justify-between text-sm font-thin`}
+                  return (
+                    <Link
+                      key={index}
+                      className="py-1 hover:bg-gray-200 p-2"
+                      href={`/transactions/${payment._id}?type=selling`}
                     >
-                      <p>
-                        {Intl.DateTimeFormat("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }).format(new Date(payment.collectionDate))}
-                      </p>
-                      <p>{isAfterToday ? " (Overdue)" : " (Upcoming)"}</p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p>{payment.customer}</p>
-                      <p>₱{(payment.total - totalPayments).toLocaleString()}</p>
-                    </div>
-                  </Link>
-                );
-              })}
+                      <div
+                        className={`${
+                          isAfterToday ? "text-red-400" : ""
+                        } flex justify-between text-sm font-thin`}
+                      >
+                        <p>
+                          {Intl.DateTimeFormat("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }).format(new Date(payment.collectionDate))}
+                        </p>
+                        <p>{isAfterToday ? " (Overdue)" : " (Upcoming)"}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p>{payment.customer}</p>
+                        <p>
+                          ₱{(payment.total - totalPayments).toLocaleString()}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                }
+              )}
             </div>
           </div>
         </div>
