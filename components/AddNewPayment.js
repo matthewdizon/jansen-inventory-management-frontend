@@ -71,7 +71,7 @@ function AddNewPayment({ isOpen, setIsOpen, id }) {
             <select
               onChange={(e) => setMethod(e.target.value)}
               value={method}
-              className="p-4 rounded-lg select-p-4"
+              className="p-4 rounded-lg"
             >
               <option value="Cash">Cash</option>
               <option value="Check">Check</option>

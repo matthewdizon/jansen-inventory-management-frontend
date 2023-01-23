@@ -100,7 +100,7 @@ export default function AddSellingTransactionForm() {
 
     if (res.ok) {
       // Set success message
-      setMessage("Successfully added part");
+      setMessage("Successfully added Selling Transaction");
       setShowMessage(true);
 
       setName("");
@@ -112,8 +112,9 @@ export default function AddSellingTransactionForm() {
       });
       setCollectionDate(new Date().toISOString().substring(0, 10));
     } else {
+      const json = await res.json();
       // Set error message
-      setMessage("Error: Invalid email or password");
+      setMessage(`Error: ${json.error}`);
       setShowMessage(true);
     }
   };
@@ -121,125 +122,153 @@ export default function AddSellingTransactionForm() {
   console.log(items);
 
   return (
-    <>
+    <div className="bg-white rounded-xl p-8 px-12">
+      <p className="font-bold text-lg">Add New Selling Transaction</p>
       <form className="grid gap-2" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          placeholder="customer name"
-          className="px-4 py-2 rounded-xl"
-        />
-        <label>date of transaction</label>
-        <input
-          type="date"
-          onChange={(e) => setTransactionDate(e.target.value)}
-          value={transactionDate}
-          className="px-4 py-2 rounded-xl"
-        />
-        <label>initial payment</label>
-        <div>
-          <select
-            onChange={(e) =>
-              setInitialPayment({ ...initialPayment, method: e.target.value })
-            }
-          >
-            <option value="Cash">Cash</option>
-            <option value="Check">Check</option>
-          </select>
+        <div className="grid grid-cols-2 items-center">
+          <p>Customer Name</p>
           <input
-            type="number"
-            onChange={(e) =>
-              setInitialPayment({ ...initialPayment, amount: e.target.value })
-            }
-            value={initialPayment.amount}
-            placeholder="amount"
-            className="px-4 py-2 rounded-xl"
+            type="text"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            placeholder="Name"
+            className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            required
           />
         </div>
-        <label>collection date</label>
-        <input
-          type="date"
-          onChange={(e) => setCollectionDate(e.target.value)}
-          value={collectionDate}
-          className="px-4 py-2 rounded-xl"
-        />
-        <label>items</label>
-        {items.map((item, index) => (
-          <div key={index} className="flex gap-2">
-            {/* <Autocomplete
-            getItemValue={(item) => item.name}
-            items={itemOptions}
-            renderItem={(item, isHighlighted) => (
-              <div
-                key={item.name}
-                style={{ background: isHighlighted ? "lightgray" : "white" }}
+        <div className="grid grid-cols-2 items-center">
+          <p>Date of Transaction</p>
+          <input
+            type="date"
+            onChange={(e) => setTransactionDate(e.target.value)}
+            value={transactionDate}
+            className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            required
+          />
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <label>Initial Payment</label>
+          <div className="grid grid-cols-2 gap-8">
+            <div>
+              <p className="text-xs font-thin">Payment Method</p>
+              <select
+                onChange={(e) =>
+                  setInitialPayment({
+                    ...initialPayment,
+                    method: e.target.value,
+                  })
+                }
+                className="h-full rounded-lg w-full px-4"
               >
-                {item.name}
-              </div>
-            )}
-            value={item.item}
-            onChange={(e) => handleChange(e, index)}
-            onSelect={(value, item) => {
-              // Update the item field with the selected item
-              const newItems = [...items];
-              newItems[index].item = item.name;
-              setItems(newItems);
-            }}
-            // onSearch={handleSearch}
-          /> */}
-            <input
-              list="item-options"
-              name="part"
-              className="px-4 py-2 rounded-xl"
-              placeholder="item name"
-              value={item.part}
-              onChange={(e) => handleChange(e, index)}
-              onInput={handleSearch}
-            />
-            <datalist id="item-options">
-              {itemOptions.map((item) => (
-                <option key={item.name} value={item.name} label={item.name} />
-              ))}
-            </datalist>
-            <input
-              type="number"
-              name="quantity"
-              className="px-4 py-2 rounded-xl"
-              placeholder="quantity"
-              value={item.quantity}
-              onChange={(e) => handleChange(e, index)}
-            />
-            <input
-              type="number"
-              name="price"
-              className="px-4 py-2 rounded-xl"
-              placeholder="price"
-              value={item.price}
-              onChange={(e) => handleChange(e, index)}
-            />
-            {items.length > 1 && (
-              <button type="button" onClick={() => handleRemoveItem(index)}>
-                -
-              </button>
-            )}
-            {index === items.length - 1 && (
-              <button type="button" onClick={handleAddItem}>
-                +
-              </button>
-            )}
+                <option value="Cash">Cash</option>
+                <option value="Check">Check</option>
+              </select>
+            </div>
+            <div>
+              <p className="text-xs font-thin">Amount</p>
+              <input
+                type="number"
+                onChange={(e) =>
+                  setInitialPayment({
+                    ...initialPayment,
+                    amount: e.target.value,
+                  })
+                }
+                value={initialPayment.amount}
+                placeholder="amount"
+                className="px-4 w-full h-full rounded-xl border-2 border-gray-200"
+              />
+            </div>
           </div>
-        ))}
-        <button
-          type="submit"
-          className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase"
-        >
-          Submit
-        </button>
+        </div>
+        <div className="grid grid-cols-2 items-center mt-6">
+          <label>Collection Date</label>
+          <input
+            type="date"
+            onChange={(e) => setCollectionDate(e.target.value)}
+            value={collectionDate}
+            className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            required
+          />
+        </div>
+        <div className="grid grid-cols-2">
+          <div className="flex gap-4 items-center">
+            <label>Items</label>
+            <button
+              type="button"
+              onClick={handleAddItem}
+              className="bg-gray-200 rounded-xl p-2 px-6"
+            >
+              Add Another Item
+            </button>
+          </div>
+          <div className="grid gap-2">
+            {items.map((item, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-3 gap-2 relative items-center"
+              >
+                <select
+                  className="h-full rounded-lg p-4"
+                  value={item.part}
+                  name="part"
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                >
+                  <option value="">Select Part</option>
+                  {allItems.map((item, index) => {
+                    return (
+                      <option value={item._id} key={index}>
+                        {item.name} ({item.supplier})
+                      </option>
+                    );
+                  })}
+                </select>
+                <input
+                  type="number"
+                  name="quantity"
+                  className="px-4 py-2 rounded-xl border-2 border-gray-200"
+                  placeholder="quantity"
+                  value={item.quantity}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+                <input
+                  type="number"
+                  name="price"
+                  className="px-4 py-2 rounded-xl border-2 border-gray-200"
+                  placeholder="price"
+                  value={item.price}
+                  onChange={(e) => handleChange(e, index)}
+                  required
+                />
+                {items.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveItem(index)}
+                    className="absolute -right-4"
+                  >
+                    -
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-[#3da9fc] text-[#fffffe] px-8 py-2 rounded-lg hover:shadow-lg uppercase max-w-max"
+          >
+            Submit
+          </button>
+        </div>
       </form>
       {showMessage && (
-        <div className="bg-blue-500 text-white p-4 rounded-xl">{message}</div>
+        <div className="bg-blue-500 text-white p-4 rounded-xl my-4">
+          {message}
+        </div>
       )}
-    </>
+    </div>
   );
 }

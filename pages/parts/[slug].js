@@ -55,6 +55,8 @@ function PartSlug() {
 
   if (!data) return <div>Loading</div>;
 
+  console.log(data);
+
   const DeleteModal = ({ setShowDeleteModal }) => {
     return (
       <div className="fixed bottom-0 inset-x-0 px-4 pb-6">

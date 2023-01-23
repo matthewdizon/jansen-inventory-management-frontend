@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import AddSellingTransactionForm from "../../components/AddSellingTransaction";
 import AddBuyingTransactionForm from "../../components/AddBuyingTransaction";
@@ -12,9 +12,17 @@ export default function AddTransaction() {
     type === "buying" ? "Buying" : "Selling"
   );
 
+  console.log("here", type, transactionsType);
+
+  useEffect(() => {
+    type === "buying"
+      ? setTransactionsType("Buying")
+      : setTransactionsType("Selling");
+  }, [type]);
+
   return (
     <Layout>
-      <p>Add {transactionsType} Transaction</p>
+      {/* <p>Add {transactionsType} Transaction</p> */}
       <ul className="flex border-b border-gray-200 text-center gap-1 my-4">
         <li>
           <div

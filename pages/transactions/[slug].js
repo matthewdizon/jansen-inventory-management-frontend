@@ -118,9 +118,12 @@ function PartSlug() {
             <p>Subtotal</p>
           </div>
           {items.map((item, index) => {
+            console.log(item);
             return (
               <div key={index} className="grid grid-cols-4">
-                <p>{item.part}</p>
+                <p>
+                  {item.part.name} ({item.part.supplier})
+                </p>
                 <p>{item.quantity} pcs</p>
                 <p>₱{item.price} each</p>
                 <p>₱{item.price * item.quantity}</p>
