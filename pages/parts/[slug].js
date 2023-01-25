@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
+import Link from "next/link";
 
 function PartSlug() {
   const [data, setData] = useState(null);
@@ -118,7 +119,16 @@ function PartSlug() {
     );
   };
 
-  const { quantity, quantityThreshold, name, supplier } = data;
+  const {
+    quantity,
+    quantityThreshold,
+    name,
+    supplier,
+    sellingTransactions,
+    buyingTransactions,
+  } = data;
+
+  console.log(sellingTransactions);
 
   return (
     <Layout>
@@ -166,6 +176,91 @@ function PartSlug() {
         <div className="bg-gray-100 rounded-2xl p-8 grid items-center justify-center">
           <p className="text-sm font-medium mx-auto">Quantity Threshold</p>
           <p className="text-5xl font-extrabold mx-auto">{quantityThreshold}</p>
+        </div>
+      </div>
+      <div className="my-8 grid grid-cols-2 gap-8">
+        <div className="bg-gray-100 rounded-2xl p-8">
+          <p className="font-bold text-lg">Selling Transactions</p>
+          <div className="grid divide-y-2 h-64 pr-4 overflow-auto">
+            {sellingTransactions?.map((transaction, index) => {
+              const { _id, date, customer, totalPayments, items, charge } =
+                transaction;
+              return (
+                <Link
+                  key={index}
+                  className="py-1 hover:bg-gray-200 p-2"
+                  href={`/transactions/${_id}?type=selling`}
+                >
+                  <div className={`flex justify-between text-sm font-thin`}>
+                    <p>
+                      {Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }).format(new Date(date))}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p>{customer}</p>
+                    <p>₱{totalPayments.toLocaleString()} paid</p>
+                  </div>
+                  <p className="w-full flex justify-end">
+                    ₱{charge.toLocaleString()} charge
+                  </p>
+                  <div className="w-full flex justify-end">
+                    {items.map((item, index) => {
+                      return (
+                        <div key={index}>
+                          <p>
+                            {item.quantity} sold @ ₱{item.price} each
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+        <div className="bg-gray-100 rounded-2xl p-8">
+          <p className="font-bold text-lg">Buying Transactions</p>
+          <div className="grid divide-y-2 h-64 pr-4 overflow-auto">
+            {buyingTransactions?.map((transaction, index) => {
+              const { _id, date, total, items } = transaction;
+              return (
+                <Link
+                  key={index}
+                  className="py-1 hover:bg-gray-200 p-2"
+                  href={`/transactions/${_id}?type=buying`}
+                >
+                  <div className={`flex justify-between text-sm font-thin`}>
+                    <p>
+                      {Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }).format(new Date(date))}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p>₱{total.toLocaleString()}</p>
+                    <div>
+                      {items.map((item, index) => {
+                        return (
+                          <div key={index}>
+                            <p>
+                              {item.quantity} purchased @ ₱{item.price} each
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </Layout>

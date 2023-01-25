@@ -219,7 +219,7 @@ export default function AddSellingTransactionForm() {
                   {allItems.map((item, index) => {
                     return (
                       <option value={item._id} key={index}>
-                        {item.name} ({item.supplier})
+                        {item.name} ({item.supplier}) - {item.quantity} pcs
                       </option>
                     );
                   })}

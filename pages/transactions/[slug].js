@@ -319,7 +319,12 @@ function PartSlug() {
           {items.map((item, index) => {
             return (
               <div key={index} className="grid grid-cols-4">
-                <p>{item.part}</p>
+                <Link
+                  href={`/parts/${item.part._id}`}
+                  className="hover:underline hover:font-bold"
+                >
+                  {item.part.name} ({item.part.supplier})
+                </Link>
                 <p>{item.quantity} pcs</p>
                 <p>₱{item.price} each</p>
                 <p>₱{item.price * item.quantity}</p>

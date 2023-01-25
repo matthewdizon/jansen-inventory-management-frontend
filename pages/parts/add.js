@@ -50,44 +50,65 @@ export default function AddPart() {
 
   return (
     <Layout>
-      <p>Add Part</p>
-      <form onSubmit={handleSubmit} className="grid gap-2 my-8">
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          placeholder="name"
-          className="px-4 py-2 rounded-xl"
-        />
-        <div className="flex gap-4">
-          <input
-            type="number"
-            onChange={(e) => setQuantity(e.target.value)}
-            value={quantity}
-            placeholder="quantity"
-            className="px-4 py-2 rounded-xl"
-          />
-          <input
-            type="number"
-            onChange={(e) => setQuantityThreshold(e.target.value)}
-            value={quantityThreshold}
-            placeholder="quantity threshold"
-            className="px-4 py-2 rounded-xl"
-          />
-        </div>
-        <input
-          type="text"
-          onChange={(e) => setSupplier(e.target.value)}
-          value={supplier}
-          placeholder="supplier"
-          className="px-4 py-2 rounded-xl"
-        />
-        <button className="bg-[#3da9fc] text-[#fffffe] px-4 py-2 rounded-lg hover:shadow-lg uppercase">
-          Add Part
-        </button>
-      </form>
+      <div className="bg-white rounded-xl p-8 px-12">
+        <p className="font-bold text-lg">Add New Part</p>
+        <form onSubmit={handleSubmit} className="grid gap-2 my-8">
+          <div className="grid grid-cols-2 items-center">
+            <label>Part Name</label>
+            <input
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              placeholder="Name"
+              className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center">
+            <label>Quantity</label>
+            <input
+              type="number"
+              onChange={(e) => setQuantity(e.target.value)}
+              value={quantity}
+              placeholder="quantity"
+              className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center">
+            <label>Quantity Threshold</label>
+            <input
+              type="number"
+              onChange={(e) => setQuantityThreshold(e.target.value)}
+              value={quantityThreshold}
+              placeholder="quantity threshold"
+              className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center">
+            <label>Supplier Name</label>
+            <input
+              type="text"
+              onChange={(e) => setSupplier(e.target.value)}
+              value={supplier}
+              placeholder="supplier"
+              className="px-4 py-2 rounded-xl border-2 border-gray-200"
+            />
+          </div>
+          <div className="flex gap-4"></div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-[#3da9fc] text-[#fffffe] px-8 py-2 rounded-lg hover:shadow-lg uppercase max-w-max"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
       {showMessage && (
-        <div className="bg-blue-500 text-white p-4 rounded-xl">{message}</div>
+        <div className="bg-blue-500 text-white p-4 rounded-xl my-4">
+          {message}
+        </div>
       )}
     </Layout>
   );
