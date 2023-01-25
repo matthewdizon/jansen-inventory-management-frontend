@@ -153,13 +153,6 @@ function PartSlug() {
     return (
       <div className="grid bg-white rounded-xl relative divide-y-2 p-8 px-16">
         <div className="grid grid-cols-2 rounded-t-xl py-8">
-          <Link
-            className="absolute right-4 top-4 bg-gray-200 text-gray-600 p-4 rounded-md hover:cursor-pointer"
-            href={`/transactions/pdf?slug=${slug}&type=${type}`}
-            target="_blank"
-          >
-            Download PDF
-          </Link>
           <div>
             <p className="grid">
               <span className="text-xs font-thin uppercase">
@@ -281,13 +274,6 @@ function PartSlug() {
     return (
       <div className="grid bg-white rounded-xl relative divide-y-2 p-8 px-16">
         <div className="grid grid-cols-2 rounded-t-xl py-8">
-          <Link
-            className="absolute right-4 top-4 bg-gray-200 text-gray-600 p-4 rounded-md hover:cursor-pointer"
-            href={`/transactions/pdf?slug=${slug}&type=${type}`}
-            target="_blank"
-          >
-            Download PDF
-          </Link>
           <div>
             <p className="grid">
               <span className="text-xs font-thin uppercase">
@@ -364,27 +350,53 @@ function PartSlug() {
           <DeleteModal setShowDeleteModal={setShowDeleteModal} />
         )}
         <p>Invoice: {slug}</p>
-        <div
-          className="flex items-center bg-red-400 text-[#fffffe] rounded-lg p-2 px-4 gap-2 hover:opacity-50 duration-500 transition hover:cursor-pointer"
-          onClick={() => setShowDeleteModal(true)}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="flex gap-4">
+          <Link
+            className="flex items-center bg-blue-400 text-[#fffffe] rounded-lg p-2 px-4 gap-2 hover:opacity-50 duration-500 transition hover:cursor-pointer"
+            href={`/transactions/pdf?slug=${slug}&type=${type}`}
+            target="_blank"
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
-              fill="currentColor"
-            />
-            <path d="M9 9H11V17H9V9Z" fill="currentColor" />
-            <path d="M13 9H15V17H13V9Z" fill="currentColor" />
-          </svg>
-          <p>Delete</p>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M7 18H17V16H7V18Z" fill="currentColor" />
+              <path d="M17 14H7V12H17V14Z" fill="currentColor" />
+              <path d="M7 10H11V8H7V10Z" fill="currentColor" />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6 2C4.34315 2 3 3.34315 3 5V19C3 20.6569 4.34315 22 6 22H18C19.6569 22 21 20.6569 21 19V9C21 5.13401 17.866 2 14 2H6ZM6 4H13V9H19V19C19 19.5523 18.5523 20 18 20H6C5.44772 20 5 19.5523 5 19V5C5 4.44772 5.44772 4 6 4ZM15 4.10002C16.6113 4.4271 17.9413 5.52906 18.584 7H15V4.10002Z"
+                fill="currentColor"
+              />
+            </svg>
+            Download PDF
+          </Link>
+          <div
+            className="flex items-center bg-red-400 text-[#fffffe] rounded-lg p-2 px-4 gap-2 hover:opacity-50 duration-500 transition hover:cursor-pointer"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M17 5V4C17 2.89543 16.1046 2 15 2H9C7.89543 2 7 2.89543 7 4V5H4C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H5V18C5 19.6569 6.34315 21 8 21H16C17.6569 21 19 19.6569 19 18V7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H17ZM15 4H9V5H15V4ZM17 7H7V18C7 18.5523 7.44772 19 8 19H16C16.5523 19 17 18.5523 17 18V7Z"
+                fill="currentColor"
+              />
+              <path d="M9 9H11V17H9V9Z" fill="currentColor" />
+              <path d="M13 9H15V17H13V9Z" fill="currentColor" />
+            </svg>
+            <p>Delete</p>
+          </div>
         </div>
       </div>
       {type === "selling" ? <SellingData /> : <BuyingData />}
