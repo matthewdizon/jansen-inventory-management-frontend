@@ -193,10 +193,10 @@ function PartSlug() {
             return (
               <div key={index} className="grid grid-cols-4">
                 <Link
-                  href={`/parts/${item.part._id}`}
+                  href={`/parts/${item.part?._id}`}
                   className="hover:underline hover:font-bold"
                 >
-                  {item.part.name} ({item.part.supplier})
+                  {item.part?.name} ({item.part?.supplier})
                 </Link>
                 <p>{item.quantity} pcs</p>
                 <p>₱{item.price} each</p>
@@ -223,7 +223,7 @@ function PartSlug() {
                 />
               )}
             </div>
-            {payments.map((payment, index) => {
+            {payments?.map((payment, index) => {
               return (
                 <div key={index}>
                   <p>
@@ -309,10 +309,10 @@ function PartSlug() {
             return (
               <div key={index} className="grid grid-cols-4">
                 <Link
-                  href={`/parts/${item.part._id}`}
+                  href={`/parts/${item.part?._id}`}
                   className="hover:underline hover:font-bold"
                 >
-                  {item.part.name} ({item.part.supplier})
+                  {item.part?.name} ({item.part?.supplier})
                 </Link>
                 <p>{item.quantity} pcs</p>
                 <p>₱{item.price} each</p>
